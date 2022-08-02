@@ -1,4 +1,4 @@
-package com.jefftrotz.fitnesstracker.data
+package com.jefftrotz.fitnesstracker.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
