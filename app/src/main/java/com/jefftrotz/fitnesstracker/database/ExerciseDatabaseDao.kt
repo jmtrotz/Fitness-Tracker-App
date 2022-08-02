@@ -1,10 +1,17 @@
 package com.jefftrotz.fitnesstracker.database
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+
 import com.jefftrotz.fitnesstracker.model.Exercise
 import com.jefftrotz.fitnesstracker.model.ExerciseType
+
 import kotlinx.coroutines.flow.Flow
-import java.util.*
+import java.util.Date
 
 @Dao
 interface ExerciseDatabaseDao {
@@ -18,10 +25,10 @@ interface ExerciseDatabaseDao {
     suspend fun getExerciseByDate(date: Date): Flow<List<Exercise>>
 
     @Query("SELECT * FROM exercises_table")
-    fun getAllWorkouts(): Flow<List<Exercise>>
+    fun getAllExercises(): Flow<List<Exercise>>
 
     @Query("DELETE FROM exercises_table")
-    suspend fun deleteAllWorkouts()
+    suspend fun deleteAllExercises()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExercise(exercise: Exercise)

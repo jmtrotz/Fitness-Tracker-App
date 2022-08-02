@@ -1,7 +1,7 @@
 package com.jefftrotz.fitnesstracker.util
 
 import androidx.room.TypeConverter
-import java.util.*
+import java.util.Date
 
 class DateConverter {
     @TypeConverter
