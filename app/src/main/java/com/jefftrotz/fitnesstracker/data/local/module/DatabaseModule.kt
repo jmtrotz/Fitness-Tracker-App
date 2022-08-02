@@ -1,10 +1,10 @@
-package com.jefftrotz.fitnesstracker.database.module
+package com.jefftrotz.fitnesstracker.data.local.module
 
 import android.content.Context
 import androidx.room.Room
 
-import com.jefftrotz.fitnesstracker.database.ExerciseDatabase
-import com.jefftrotz.fitnesstracker.database.ExerciseDatabaseDao
+import com.jefftrotz.fitnesstracker.data.local.ExerciseDatabase
+import com.jefftrotz.fitnesstracker.data.local.ExerciseDatabaseDao
 
 import dagger.Module
 import dagger.Provides

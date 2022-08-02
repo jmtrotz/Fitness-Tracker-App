@@ -1,6 +1,6 @@
 package com.jefftrotz.fitnesstracker.repository
 
-import com.jefftrotz.fitnesstracker.database.ExerciseDatabaseDao
+import com.jefftrotz.fitnesstracker.data.local.ExerciseDatabaseDao
 import com.jefftrotz.fitnesstracker.model.Exercise
 import com.jefftrotz.fitnesstracker.model.ExerciseType
 

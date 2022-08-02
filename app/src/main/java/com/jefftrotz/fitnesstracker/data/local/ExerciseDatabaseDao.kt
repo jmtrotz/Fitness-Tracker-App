@@ -1,4 +1,4 @@
-package com.jefftrotz.fitnesstracker.database
+package com.jefftrotz.fitnesstracker.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
