@@ -1,4 +1,4 @@
-package com.jefftrotz.fitnesstracker.data.local
+package com.jefftrotz.fitnesstracker.data.local.exercise
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -11,5 +11,5 @@ import com.jefftrotz.fitnesstracker.util.UuidConverter
 @Database(entities = [Exercise::class], version = 1, exportSchema = false)
 @TypeConverters(DateConverter::class, UuidConverter::class)
 abstract class ExerciseDatabase : RoomDatabase() {
-    abstract fun exerciseDao(): ExerciseDatabaseDao
+    abstract fun exerciseDao(): ExerciseDao
 }
