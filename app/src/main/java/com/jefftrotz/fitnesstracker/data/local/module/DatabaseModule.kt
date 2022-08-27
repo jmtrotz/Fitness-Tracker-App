@@ -20,8 +20,7 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Singleton
     @Provides
-    fun provideUserDao(userDatabase: UserDatabase): UserDao =
-        userDatabase.userDao()
+    fun provideUserDao(userDatabase: UserDatabase): UserDao = userDatabase.userDao()
 
     @Singleton
     @Provides

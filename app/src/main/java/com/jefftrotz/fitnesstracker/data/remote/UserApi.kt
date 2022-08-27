@@ -8,7 +8,7 @@ import javax.inject.Singleton
 // TODO: Finish GET and POST requests
 @Singleton
 interface UserApi {
-    @GET(value = "")
+    @GET(value = "user")
     suspend fun getUser(): User
 
     @POST(value = "")

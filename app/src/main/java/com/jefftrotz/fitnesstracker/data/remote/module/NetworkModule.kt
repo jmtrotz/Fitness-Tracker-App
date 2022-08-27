@@ -2,6 +2,7 @@ package com.jefftrotz.fitnesstracker.data.remote.module
 
 import com.jefftrotz.fitnesstracker.data.remote.ExerciseApi
 import com.jefftrotz.fitnesstracker.data.remote.UserApi
+import com.jefftrotz.fitnesstracker.util.Constants.BASE_URL
 
 import dagger.Module
 import dagger.Provides
@@ -12,7 +13,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-// TODO: Set base URLs
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -20,7 +20,7 @@ object NetworkModule {
     @Singleton
     fun provideUserApi(): UserApi {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(UserApi::class.java)
@@ -30,7 +30,7 @@ object NetworkModule {
     @Singleton
     fun provideExerciseApi(): ExerciseApi {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ExerciseApi::class.java)

@@ -8,7 +8,7 @@ import javax.inject.Singleton
 // TODO: Finish GET and POST requests
 @Singleton
 interface ExerciseApi {
-    @GET(value = "")
+    @GET(value = "exercise")
     suspend fun getExercises(): List<Exercise>
 
     @POST(value = "")

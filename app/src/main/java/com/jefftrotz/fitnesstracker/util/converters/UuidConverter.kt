@@ -1,4 +1,4 @@
-package com.jefftrotz.fitnesstracker.util
+package com.jefftrotz.fitnesstracker.util.converters
 
 import androidx.room.TypeConverter
 import java.util.UUID

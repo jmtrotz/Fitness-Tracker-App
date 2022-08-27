@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.jefftrotz.fitnesstracker.model.User
 import com.jefftrotz.fitnesstracker.repository.UserRepository
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class UserViewModel @Inject constructor(
     private val repository: UserRepository
 ) : ViewModel() {
@@ -23,7 +25,7 @@ class UserViewModel @Inject constructor(
     init {
         viewModelScope.launch(context = Dispatchers.IO) {
             repository.getAllUsers().distinctUntilChanged().collect { userList ->
-                if (userList.isNullOrEmpty()) {
+                if (userList.isEmpty()) {
                     Log.e(TAG, "User list was null or empty")
                 } else {
                     _userList.value = userList

@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Fitness Tracker</string>
+
+    <!-- Splash screen resources -->
+    <string name="content_description_splash_screen_icon">Barbell</string>
+
+    <!-- Login screen resources -->
+    <string name="placeholder_email">Email Address</string>
+    <string name="placeholder_password">Password</string>
+    <string name="placeholder_confirm_password">Confirm Password</string>
+    <string name="button_label_create_account">Create Account</string>
+    <string name="button_label_login">Login</string>
+    <string name="button_label_continue">Continue</string>
+    <string name="button_label_cancel">Cancel</string>
+    <string name="toggle_label_off_the_grid_mode">Off the grid mode</string>
+    <string name="off_the_grid_mode_enabled_label">Data will only be stored locally on this device. WARNING: You will have to recreate your account if application data is deleted</string>
+    <string name="off_the_grid_mode_disabled_label">Data will be stored remotely for easy access across multiple devices</string>
+    <string name="error_account_exists">Account already exists</string>
+    <string name="error_email_blank">Please enter your email address</string>
+    <string name="error_password_blank">Please enter your password</string>
+    <string name="error_confirmation_blank">Please confirm your password</string>
+    <string name="error_invalid_email">Invalid email address</string>
+    <string name="error_invalid_password">Password must contain at lest one uppercase letter, one special character, one number, and be between 8 to 24 characters long</string>
+    <string name="error_passwords_do_not_match">Passwords don\'t match</string>
+    <string name="content_description_show_password_icon">Password Visibility</string>
 </resources>

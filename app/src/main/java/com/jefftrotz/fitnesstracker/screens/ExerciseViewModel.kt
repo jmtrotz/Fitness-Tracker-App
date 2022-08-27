@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.jefftrotz.fitnesstracker.model.Exercise
 import com.jefftrotz.fitnesstracker.repository.ExerciseRepository
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ExerciseViewModel @Inject constructor(
     private val repository:ExerciseRepository
 ) : ViewModel() {
@@ -23,7 +25,7 @@ class ExerciseViewModel @Inject constructor(
     init {
         viewModelScope.launch(context = Dispatchers.IO) {
             repository.getAllExercises().distinctUntilChanged().collect { exerciseList ->
-                if (exerciseList.isNullOrEmpty()) {
+                if (exerciseList.isEmpty()) {
                     Log.e(TAG, "Exercise list was null or empty")
                 } else {
                     _exerciseList.value = exerciseList

@@ -1,18 +1,22 @@
 package com.jefftrotz.fitnesstracker.navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 import com.jefftrotz.fitnesstracker.screens.AboutScreen
-import com.jefftrotz.fitnesstracker.screens.CreateAccountScreen
-import com.jefftrotz.fitnesstracker.screens.LoginScreen
+import com.jefftrotz.fitnesstracker.screens.login.LoginScreen
 import com.jefftrotz.fitnesstracker.screens.MainScreen
 import com.jefftrotz.fitnesstracker.screens.SearchScreen
 import com.jefftrotz.fitnesstracker.screens.SettingsScreen
 import com.jefftrotz.fitnesstracker.screens.SplashScreen
+import com.jefftrotz.fitnesstracker.screens.login.LoginViewModel
 
+@ExperimentalMaterial3Api
 @Composable
 fun FitnessTrackerNavigation() {
     val navController = rememberNavController()
@@ -22,31 +26,28 @@ fun FitnessTrackerNavigation() {
         startDestination = FitnessTrackerScreens.SplashScreen.name
     ) {
         composable(FitnessTrackerScreens.AboutScreen.name) {
-            AboutScreen(navController = navController)
-        }
-
-        composable(FitnessTrackerScreens.CreateAccountScreen.name) {
-            CreateAccountScreen(navController = navController)
+            AboutScreen(navController)
         }
 
         composable(FitnessTrackerScreens.LoginScreen.name) {
-            LoginScreen(navController = navController)
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            LoginScreen(navController, loginViewModel)
         }
 
         composable(FitnessTrackerScreens.MainScreen.name) {
-            MainScreen(navController = navController)
+            MainScreen(navController)
         }
 
         composable(FitnessTrackerScreens.SearchScreen.name) {
-            SearchScreen(navController = navController)
+            SearchScreen(navController)
         }
 
         composable(FitnessTrackerScreens.SettingsScreen.name) {
-            SettingsScreen(navController = navController)
+            SettingsScreen(navController)
         }
 
         composable(FitnessTrackerScreens.SplashScreen.name) {
-            SplashScreen(navController = navController)
+            SplashScreen(navController)
         }
     }
 }
