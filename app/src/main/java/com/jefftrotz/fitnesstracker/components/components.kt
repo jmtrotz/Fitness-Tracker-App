@@ -1,24 +1,19 @@
 package com.jefftrotz.fitnesstracker.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -26,6 +21,36 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.jefftrotz.fitnesstracker.R
+
+@ExperimentalMaterial3Api
+@Composable
+fun TopBar(title: String,
+           icon: ImageVector,
+           contentDescription: String,
+           onClick: () -> Unit
+) {
+    CenterAlignedTopAppBar(
+        title = { Text(text = title) },
+        actions = {
+            IconButton(onClick = onClick) {
+                Icon(imageVector = icon, contentDescription = contentDescription)
+            }
+        }
+    )
+}
+
+@Composable
+fun AddButton(onClick: () -> Unit) {
+    FloatingActionButton(
+        onClick = onClick,
+        shape = RoundedCornerShape(size = 50.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = stringResource(R.string.content_description_add_button_icon)
+        )
+    }
+}
 
 @Composable
 fun ErrorText(text: String) {
@@ -52,7 +77,7 @@ fun CommonTextField(
 ) {
     OutlinedTextField(
         value = value,
-        onValueChange = { onValueChange.invoke(it) },
+        onValueChange = onValueChange,
         modifier = Modifier
             .fillMaxWidth(0.8f)
             .padding(4.dp),
@@ -81,34 +106,54 @@ fun PasswordTextField(
     isError: Boolean,
     isNewUser: Boolean
 ) {
+    val visualTransformation = if (isPasswordVisible) {
+        VisualTransformation.None
+    } else {
+        PasswordVisualTransformation()
+    }
+    val imeAction = if (isNewUser) {
+        ImeAction.Next
+    } else {
+        ImeAction.Done
+    }
+
     OutlinedTextField(
         value = value,
-        onValueChange = { onValueChange.invoke(it) },
+        onValueChange = onValueChange,
         modifier = Modifier
             .fillMaxWidth(0.8f)
             .padding(4.dp),
         label = { Text(text = label) },
-        trailingIcon = {
-            IconButton(onClick = { onClick.invoke() }) {
-                Icon(
-                    imageVector = if (isPasswordVisible) Icons.Filled.Visibility
-                    else Icons.Filled.VisibilityOff,
-                    contentDescription = stringResource(
-                        R.string.content_description_show_password_icon
-                    )
-                )
-            }
-        },
+        trailingIcon = { PasswordVisibilityButton(isPasswordVisible) { onClick() } },
         isError = isError,
-        visualTransformation = if (isPasswordVisible) VisualTransformation.None
-        else PasswordVisualTransformation(),
+        visualTransformation = visualTransformation,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             autoCorrect = false,
-            imeAction = if (isNewUser) ImeAction.Next else ImeAction.Done
+            imeAction = imeAction
         ),
         singleLine = true,
         maxLines = 1,
         shape = RoundedCornerShape(16.dp)
     )
+}
+
+@Composable
+fun PasswordVisibilityButton(isPasswordVisible: Boolean, onClick: () -> Unit) {
+    val icon = if (isPasswordVisible) {
+        Icons.Filled.Visibility
+    } else {
+        Icons.Filled.VisibilityOff
+    }
+
+    IconButton(onClick = onClick) {
+        Icon(
+            imageVector = icon,
+            contentDescription = stringResource(R.string.content_description_show_password_icon)
+        )
+    }
+}
+
+fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 }

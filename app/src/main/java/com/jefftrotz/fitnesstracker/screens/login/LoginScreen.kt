@@ -22,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,6 +33,7 @@ import com.jefftrotz.fitnesstracker.R
 import com.jefftrotz.fitnesstracker.components.CommonTextField
 import com.jefftrotz.fitnesstracker.components.ErrorText
 import com.jefftrotz.fitnesstracker.components.PasswordTextField
+import com.jefftrotz.fitnesstracker.components.showToast
 import com.jefftrotz.fitnesstracker.navigation.FitnessTrackerScreens
 import com.jefftrotz.fitnesstracker.util.login.LoginError
 import com.jefftrotz.fitnesstracker.util.login.LoginUtils
@@ -44,7 +46,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
     var confirmation by rememberSaveable { mutableStateOf("") }
     var isNewUser by remember { mutableStateOf(false) }
     var isLocalAccount by remember { mutableStateOf(true) }
-    var loginError by remember { mutableStateOf(LoginError.NONE) }
+    var error by remember { mutableStateOf(LoginError.NONE) }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -52,14 +54,23 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LoginForm(
-                email,
-                password,
-                confirmation,
-                isNewUser,
-                loginError,
-                { email = it },
-                { password = it },
-                { confirmation = it }
+                email = email,
+                password = password,
+                confirmation = confirmation,
+                isNewUser = isNewUser,
+                error = error,
+                onEmailChanged = {
+                    email = it
+                    error = LoginError.NONE
+                },
+                onPasswordChanged = {
+                    password = it
+                    error = LoginError.NONE
+                },
+                onConfirmationChanged = {
+                    confirmation = it
+                    error = LoginError.NONE
+                }
             )
             if (isNewUser) {
                 AccountTypeSwitch(isLocalAccount) {
@@ -67,15 +78,20 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
                 }
             }
             ActionButtons(
-                navController,
-                viewModel,
-                email,
-                password,
-                confirmation,
-                isNewUser,
-                isLocalAccount,
-                { isNewUser = !isNewUser },
-                { loginError = it },
+                navController = navController,
+                viewModel = viewModel,
+                email = email,
+                password = password,
+                confirmation = confirmation,
+                isNewUser = isNewUser,
+                isLocalAccount = isLocalAccount,
+                onClick = {
+                    isNewUser = !isNewUser
+                    if (confirmation.isNotBlank()) {
+                        confirmation = ""
+                    }
+                },
+                onError = { error = it },
             )
         }
     }
@@ -88,7 +104,7 @@ private fun LoginForm(
     password: String,
     confirmation: String,
     isNewUser: Boolean,
-    loginError: LoginError,
+    error: LoginError,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onConfirmationChanged: (String) -> Unit
@@ -98,57 +114,66 @@ private fun LoginForm(
 
     CommonTextField(
         value = email,
-        onValueChange = { onEmailChanged.invoke(it) },
+        onValueChange = onEmailChanged,
         label = stringResource(R.string.placeholder_email),
-        isError = loginError == LoginError.EMAIL_ERROR,
+        isError = error == LoginError.EMAIL_ERROR,
         keyboardType = KeyboardType.Email,
-        autoCorrect = true,
+        autoCorrect = false,
         imeAction = ImeAction.Next
     )
-    if (loginError == LoginError.EMAIL_ERROR || loginError == LoginError.ACCOUNT_EXISTS_ERROR) {
-        ErrorText(
-            text = if (email.isBlank()) stringResource(R.string.error_email_blank)
-            else if (loginError == LoginError.ACCOUNT_EXISTS_ERROR)
-                stringResource(R.string.error_account_exists)
-            else stringResource(R.string.error_invalid_email)
-        )
+    if (error == LoginError.EMAIL_ERROR || error == LoginError.ACCOUNT_EXISTS_ERROR) {
+        val errorMessage = if (email.isBlank()) {
+            stringResource(R.string.error_email_blank)
+        } else if (error == LoginError.ACCOUNT_EXISTS_ERROR) {
+            stringResource(R.string.error_account_exists)
+        }else {
+            stringResource(R.string.error_invalid_email)
+        }
+        ErrorText(text = errorMessage)
     }
     PasswordTextField(
         value = password,
-        onValueChange = { onPasswordChanged.invoke(it) },
+        onValueChange = onPasswordChanged,
         label = stringResource(R.string.placeholder_password),
         onClick = { isPasswordVisible = !isPasswordVisible },
         isPasswordVisible = isPasswordVisible,
-        isError = loginError == LoginError.PASSWORD_ERROR,
+        isError = error == LoginError.PASSWORD_ERROR,
         isNewUser = isNewUser
     )
-    if (loginError == LoginError.PASSWORD_ERROR) {
-        ErrorText(
-            text = if (password.isBlank()) stringResource(R.string.error_password_blank)
-            else stringResource(R.string.error_invalid_password)
-        )
+    if (error == LoginError.PASSWORD_ERROR) {
+        val errorMessage = if (password.isBlank()) {
+            stringResource(R.string.error_password_blank)
+        } else {
+            stringResource(R.string.error_invalid_password)
+        }
+        ErrorText(text = errorMessage)
     }
     if (isNewUser) {
         PasswordTextField(
             value = confirmation,
-            onValueChange = { onConfirmationChanged.invoke(it) },
+            onValueChange = onConfirmationChanged,
             label = stringResource(R.string.placeholder_confirm_password),
             onClick = { isConfirmationVisible = !isConfirmationVisible },
             isPasswordVisible = isConfirmationVisible,
-            isError = loginError == LoginError.CONFIRMATION_ERROR,
+            isError = error == LoginError.CONFIRMATION_ERROR,
             isNewUser = !isNewUser
         )
-        if (loginError == LoginError.CONFIRMATION_ERROR) {
-            ErrorText(
-                text = if (confirmation.isBlank()) stringResource(R.string.error_confirmation_blank)
-                else stringResource(R.string.error_passwords_do_not_match)
-            )
+        if (error == LoginError.CONFIRMATION_ERROR) {
+            val errorMessage = if (confirmation.isBlank()) {
+                stringResource(R.string.error_confirmation_blank)
+            } else {
+                stringResource(R.string.error_passwords_do_not_match)
+            }
+            ErrorText(text = errorMessage)
         }
+    }
+    if (error == LoginError.INCORRECT_CREDENTIALS_ERROR) {
+        showToast(LocalContext.current, stringResource(R.string.error_incorrect_credentials))
     }
 }
 
 @Composable
-private fun AccountTypeSwitch(isLocalAccount: Boolean, onCheckedChanged: () -> Unit) {
+private fun AccountTypeSwitch(isLocalAccount: Boolean, onCheckedChanged: (Boolean) -> Unit) {
     Row {
         Text(
             text = stringResource(R.string.toggle_label_off_the_grid_mode),
@@ -156,16 +181,19 @@ private fun AccountTypeSwitch(isLocalAccount: Boolean, onCheckedChanged: () -> U
         )
         Switch(
             checked = isLocalAccount,
-            onCheckedChange = {
-                onCheckedChanged.invoke()
-            },
+            onCheckedChange = onCheckedChanged,
             modifier = Modifier.padding(start = 54.dp)
         )
     }
-    Text(
-        text = if (isLocalAccount) stringResource(R.string.off_the_grid_mode_enabled_label)
-        else stringResource(R.string.off_the_grid_mode_disabled_label),
-        modifier = Modifier.fillMaxWidth(0.8f).padding(start = 8.dp, end = 8.dp)
+    val switchLabel = if (isLocalAccount) {
+        stringResource(R.string.off_the_grid_mode_enabled_label)
+    } else {
+        stringResource(R.string.off_the_grid_mode_disabled_label)
+    }
+    Text(text = switchLabel,
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .padding(start = 8.dp, end = 8.dp)
     )
 }
 
@@ -179,41 +207,47 @@ private fun ActionButtons(
     confirmation: String,
     isNewUser: Boolean,
     isLocalAccount: Boolean,
-    onNewUserChanged: () -> Unit,
+    onClick: () -> Unit,
     onError: (LoginError) -> Unit
 ) {
     Row {
         Button(
-            onClick = {
-                onNewUserChanged.invoke()
-            },
+            onClick = onClick,
             modifier = Modifier.padding(top = 8.dp, end = 30.dp)
         ) {
-            Text(
-                text = if (isNewUser) stringResource(R.string.button_label_cancel)
-                else stringResource(R.string.button_label_create_account)
-            )
+            val buttonText = if (isNewUser) {
+                stringResource(R.string.button_label_cancel)
+            } else {
+                stringResource(R.string.button_label_create_account)
+            }
+            Text(text = buttonText)
         }
         Button(
             onClick = {
                 verifyInput(
-                    viewModel,
-                    email,
-                    password,
-                    confirmation,
-                    isNewUser,
-                    isLocalAccount,
-                    { onError.invoke(it) }
+                    viewModel = viewModel,
+                    email = email,
+                    password = password,
+                    confirmation = confirmation,
+                    isNewUser = isNewUser,
+                    isLocalAccount = isLocalAccount,
+                    onError = onError
                 ) {
-                    navController.navigate(FitnessTrackerScreens.MainScreen.name)
+                    navController.navigate(FitnessTrackerScreens.MainScreen.name) {
+                        popUpTo(FitnessTrackerScreens.LoginScreen.name) {
+                            inclusive = true
+                        }
+                    }
                 }
             },
             modifier = Modifier.padding(start = 30.dp, top = 8.dp)
         ) {
-            Text(
-                text = if (isNewUser) stringResource(R.string.button_label_continue)
-                else stringResource(R.string.button_label_login)
-            )
+            val buttonText = if (isNewUser) {
+                stringResource(R.string.button_label_continue)
+            } else {
+                stringResource(R.string.button_label_login)
+            }
+            Text(text = buttonText)
         }
     }
 }
@@ -231,32 +265,32 @@ private fun verifyInput(
     val loginUtils = LoginUtils()
 
     if (!loginUtils.isEmailAddressValid(email)) {
-        onError.invoke(LoginError.EMAIL_ERROR)
+        onError(LoginError.EMAIL_ERROR)
         return
     }
     if (!loginUtils.isPasswordValid(password)) {
-        onError.invoke(LoginError.PASSWORD_ERROR)
+        onError(LoginError.PASSWORD_ERROR)
         return
     }
     if (isNewUser && !loginUtils.isConfirmationValid(password, confirmation)) {
-        onError.invoke(LoginError.CONFIRMATION_ERROR)
+        onError(LoginError.CONFIRMATION_ERROR)
         return
     }
 
     val user = viewModel.getUserByEmail(email)
 
     if (user != null && isNewUser) {
-        onError.invoke(LoginError.ACCOUNT_EXISTS_ERROR)
+        onError(LoginError.ACCOUNT_EXISTS_ERROR)
     } else if (user == null && isNewUser) {
         val salt = loginUtils.generateSalt()
         val hashedPassword = loginUtils.hash(password, salt)
         viewModel.addUser(email, hashedPassword, salt, isLocalAccount)
-        onVerificationSuccess.invoke()
+        onVerificationSuccess()
     } else if (user != null) {
         if (loginUtils.isCorrectPassword(password, user.password, user.passwordSalt)) {
-            onVerificationSuccess.invoke()
+            onVerificationSuccess()
         } else {
-            onError.invoke(LoginError.INCORRECT_CREDENTIALS_ERROR)
+            onError(LoginError.INCORRECT_CREDENTIALS_ERROR)
         }
     }
 }

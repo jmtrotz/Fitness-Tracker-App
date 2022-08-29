@@ -10,11 +10,12 @@ import androidx.navigation.compose.rememberNavController
 
 import com.jefftrotz.fitnesstracker.screens.AboutScreen
 import com.jefftrotz.fitnesstracker.screens.login.LoginScreen
-import com.jefftrotz.fitnesstracker.screens.MainScreen
+import com.jefftrotz.fitnesstracker.screens.main.MainScreen
 import com.jefftrotz.fitnesstracker.screens.SearchScreen
 import com.jefftrotz.fitnesstracker.screens.SettingsScreen
 import com.jefftrotz.fitnesstracker.screens.SplashScreen
 import com.jefftrotz.fitnesstracker.screens.login.LoginViewModel
+import com.jefftrotz.fitnesstracker.screens.main.MainViewModel
 
 @ExperimentalMaterial3Api
 @Composable
@@ -30,12 +31,13 @@ fun FitnessTrackerNavigation() {
         }
 
         composable(FitnessTrackerScreens.LoginScreen.name) {
-            val loginViewModel = hiltViewModel<LoginViewModel>()
-            LoginScreen(navController, loginViewModel)
+            val viewModel = hiltViewModel<LoginViewModel>()
+            LoginScreen(navController, viewModel)
         }
 
         composable(FitnessTrackerScreens.MainScreen.name) {
-            MainScreen(navController)
+            val viewModel = hiltViewModel<MainViewModel>()
+            MainScreen()//navController, viewModel)
         }
 
         composable(FitnessTrackerScreens.SearchScreen.name) {

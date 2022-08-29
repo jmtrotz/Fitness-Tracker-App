@@ -37,7 +37,11 @@ fun SplashScreen(navController: NavController) {
         }))
         delay(timeMillis = 2000L)
         // TODO: Check if user is already logged in
-        navController.navigate(FitnessTrackerScreens.LoginScreen.name)
+        navController.navigate(FitnessTrackerScreens.LoginScreen.name) {
+            popUpTo(FitnessTrackerScreens.SplashScreen.name) {
+                inclusive = true
+            }
+        }
     })
 
     Surface(

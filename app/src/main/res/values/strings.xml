@@ -22,5 +22,12 @@
     <string name="error_invalid_email">Invalid email address</string>
     <string name="error_invalid_password">Password must contain at lest one uppercase letter, one special character, one number, and be between 8 to 24 characters long</string>
     <string name="error_passwords_do_not_match">Passwords don\'t match</string>
+    <string name="error_incorrect_credentials">Incorrect email or password</string>
     <string name="content_description_show_password_icon">Password Visibility</string>
+
+    <!-- Main screen resources -->
+    <string name="content_description_menu_button_icon">Menu</string>
+
+    <!-- UI component resources -->
+    <string name="content_description_add_button_icon">Add</string>
 </resources>
