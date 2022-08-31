@@ -1,7 +1,5 @@
 package com.jefftrotz.fitnesstracker.components
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -74,6 +72,7 @@ fun CommonTextField(
     autoCorrect: Boolean = false,
     imeAction: ImeAction = ImeAction.Default,
     onAction: KeyboardActions = KeyboardActions.Default,
+    resourceId: Int
 ) {
     OutlinedTextField(
         value = value,
@@ -93,6 +92,7 @@ fun CommonTextField(
         maxLines = 1,
         shape = RoundedCornerShape(16.dp)
     )
+    if (isError && resourceId > -1) ErrorText(text = stringResource(resourceId))
 }
 
 @ExperimentalMaterial3Api
@@ -104,13 +104,15 @@ fun PasswordTextField(
     onClick: () -> Unit,
     isPasswordVisible: Boolean,
     isError: Boolean,
-    isNewUser: Boolean
+    isNewUser: Boolean,
+    resourceId: Int
 ) {
     val visualTransformation = if (isPasswordVisible) {
         VisualTransformation.None
     } else {
         PasswordVisualTransformation()
     }
+
     val imeAction = if (isNewUser) {
         ImeAction.Next
     } else {
@@ -136,6 +138,7 @@ fun PasswordTextField(
         maxLines = 1,
         shape = RoundedCornerShape(16.dp)
     )
+    if (isError && resourceId > -1) ErrorText(text = stringResource(resourceId))
 }
 
 @Composable
@@ -152,8 +155,4 @@ fun PasswordVisibilityButton(isPasswordVisible: Boolean, onClick: () -> Unit) {
             contentDescription = stringResource(R.string.content_description_show_password_icon)
         )
     }
-}
-
-fun showToast(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 }

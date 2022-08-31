@@ -1,5 +1,6 @@
 package com.jefftrotz.fitnesstracker.screens.login
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,9 +32,7 @@ import androidx.navigation.NavController
 
 import com.jefftrotz.fitnesstracker.R
 import com.jefftrotz.fitnesstracker.components.CommonTextField
-import com.jefftrotz.fitnesstracker.components.ErrorText
 import com.jefftrotz.fitnesstracker.components.PasswordTextField
-import com.jefftrotz.fitnesstracker.components.showToast
 import com.jefftrotz.fitnesstracker.navigation.FitnessTrackerScreens
 import com.jefftrotz.fitnesstracker.util.login.LoginError
 import com.jefftrotz.fitnesstracker.util.login.LoginUtils
@@ -72,11 +71,13 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
                     error = LoginError.NONE
                 }
             )
+
             if (isNewUser) {
                 AccountTypeSwitch(isLocalAccount) {
                     isLocalAccount = !isLocalAccount
                 }
             }
+
             ActionButtons(
                 navController = navController,
                 viewModel = viewModel,
@@ -87,9 +88,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
                 isLocalAccount = isLocalAccount,
                 onClick = {
                     isNewUser = !isNewUser
-                    if (confirmation.isNotBlank()) {
-                        confirmation = ""
-                    }
+                    if (confirmation.isNotBlank()) confirmation = ""
                 },
                 onError = { error = it },
             )
@@ -119,18 +118,10 @@ private fun LoginForm(
         isError = error == LoginError.EMAIL_ERROR,
         keyboardType = KeyboardType.Email,
         autoCorrect = false,
-        imeAction = ImeAction.Next
+        imeAction = ImeAction.Next,
+        resourceId = getResourceId(error = error, email = email)
     )
-    if (error == LoginError.EMAIL_ERROR || error == LoginError.ACCOUNT_EXISTS_ERROR) {
-        val errorMessage = if (email.isBlank()) {
-            stringResource(R.string.error_email_blank)
-        } else if (error == LoginError.ACCOUNT_EXISTS_ERROR) {
-            stringResource(R.string.error_account_exists)
-        }else {
-            stringResource(R.string.error_invalid_email)
-        }
-        ErrorText(text = errorMessage)
-    }
+
     PasswordTextField(
         value = password,
         onValueChange = onPasswordChanged,
@@ -138,16 +129,10 @@ private fun LoginForm(
         onClick = { isPasswordVisible = !isPasswordVisible },
         isPasswordVisible = isPasswordVisible,
         isError = error == LoginError.PASSWORD_ERROR,
-        isNewUser = isNewUser
+        isNewUser = isNewUser,
+        resourceId = getResourceId(error = error, password = password)
     )
-    if (error == LoginError.PASSWORD_ERROR) {
-        val errorMessage = if (password.isBlank()) {
-            stringResource(R.string.error_password_blank)
-        } else {
-            stringResource(R.string.error_invalid_password)
-        }
-        ErrorText(text = errorMessage)
-    }
+
     if (isNewUser) {
         PasswordTextField(
             value = confirmation,
@@ -156,19 +141,17 @@ private fun LoginForm(
             onClick = { isConfirmationVisible = !isConfirmationVisible },
             isPasswordVisible = isConfirmationVisible,
             isError = error == LoginError.CONFIRMATION_ERROR,
-            isNewUser = !isNewUser
+            isNewUser = !isNewUser,
+            resourceId = getResourceId(error = error, confirmation = confirmation)
         )
-        if (error == LoginError.CONFIRMATION_ERROR) {
-            val errorMessage = if (confirmation.isBlank()) {
-                stringResource(R.string.error_confirmation_blank)
-            } else {
-                stringResource(R.string.error_passwords_do_not_match)
-            }
-            ErrorText(text = errorMessage)
-        }
     }
+
     if (error == LoginError.INCORRECT_CREDENTIALS_ERROR) {
-        showToast(LocalContext.current, stringResource(R.string.error_incorrect_credentials))
+        Toast.makeText(
+            LocalContext.current,
+            stringResource(R.string.error_incorrect_credentials),
+            Toast.LENGTH_LONG
+        ).show()
     }
 }
 
@@ -179,17 +162,20 @@ private fun AccountTypeSwitch(isLocalAccount: Boolean, onCheckedChanged: (Boolea
             text = stringResource(R.string.toggle_label_off_the_grid_mode),
             modifier = Modifier.padding(top = 12.dp, end = 54.dp)
         )
+
         Switch(
             checked = isLocalAccount,
             onCheckedChange = onCheckedChanged,
             modifier = Modifier.padding(start = 54.dp)
         )
     }
+
     val switchLabel = if (isLocalAccount) {
         stringResource(R.string.off_the_grid_mode_enabled_label)
     } else {
         stringResource(R.string.off_the_grid_mode_disabled_label)
     }
+
     Text(text = switchLabel,
         modifier = Modifier
             .fillMaxWidth(0.8f)
@@ -222,6 +208,7 @@ private fun ActionButtons(
             }
             Text(text = buttonText)
         }
+
         Button(
             onClick = {
                 verifyInput(
@@ -234,9 +221,7 @@ private fun ActionButtons(
                     onError = onError
                 ) {
                     navController.navigate(FitnessTrackerScreens.MainScreen.name) {
-                        popUpTo(FitnessTrackerScreens.LoginScreen.name) {
-                            inclusive = true
-                        }
+                        popUpTo(FitnessTrackerScreens.LoginScreen.name) { inclusive = true }
                     }
                 }
             },
@@ -249,6 +234,39 @@ private fun ActionButtons(
             }
             Text(text = buttonText)
         }
+    }
+}
+
+private fun getResourceId(
+    error: LoginError,
+    email: String = "",
+    password: String = "",
+    confirmation: String = ""
+): Int {
+    when (error) {
+        LoginError.EMAIL_ERROR -> {
+            return if (email.trim().isBlank()) {
+                R.string.error_email_blank
+            } else {
+                R.string.error_invalid_email
+            }
+        }
+        LoginError.PASSWORD_ERROR -> {
+            return if (password.trim().isBlank()) {
+                R.string.error_password_blank
+            } else {
+                R.string.error_invalid_password
+            }
+        }
+        LoginError.CONFIRMATION_ERROR -> {
+            return if (confirmation.trim().isBlank()) {
+                R.string.error_confirmation_blank
+            } else {
+                R.string.error_passwords_do_not_match
+            }
+        }
+        LoginError.ACCOUNT_EXISTS_ERROR -> return R.string.error_account_exists
+        else -> return -1
     }
 }
 

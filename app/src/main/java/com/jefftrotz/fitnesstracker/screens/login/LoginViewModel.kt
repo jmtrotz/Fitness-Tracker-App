@@ -22,12 +22,12 @@ class LoginViewModel @Inject constructor(private val repository: UserRepository)
     }
 
     fun addUser(
-        username: String,
+        email: String,
         password: ByteArray,
         passwordSalt: ByteArray,
         localAccount: Boolean
     ) {
-        val user = User(username, password, passwordSalt, localAccount)
+        val user = User(email, password, passwordSalt, localAccount)
         if (localAccount) {
             viewModelScope.launch { repository.insertUser(user) }
         } else {

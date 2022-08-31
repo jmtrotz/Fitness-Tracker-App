@@ -24,7 +24,7 @@ fun FitnessTrackerNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = FitnessTrackerScreens.SplashScreen.name
+        startDestination = FitnessTrackerScreens.LoginScreen.name//FitnessTrackerScreens.SplashScreen.name
     ) {
         composable(FitnessTrackerScreens.AboutScreen.name) {
             AboutScreen(navController)
