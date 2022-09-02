@@ -14,11 +14,10 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(private val repository: UserRepository) : ViewModel() {
     var user: User? = null
 
-    fun getUserByEmail(email: String): User? {
+    fun getUserByEmail(email: String) {
         viewModelScope.launch {
             user = repository.getUserByEmail(email)
         }
-        return user
     }
 
     fun addUser(
@@ -29,9 +28,13 @@ class LoginViewModel @Inject constructor(private val repository: UserRepository)
     ) {
         val user = User(email, password, passwordSalt, localAccount)
         if (localAccount) {
-            viewModelScope.launch { repository.insertUser(user) }
+            viewModelScope.launch {
+                repository.insertUser(user)
+            }
         } else {
-            viewModelScope.launch { repository.postUser(user) }
+            viewModelScope.launch {
+                repository.postUser(user)
+            }
         }
     }
 }

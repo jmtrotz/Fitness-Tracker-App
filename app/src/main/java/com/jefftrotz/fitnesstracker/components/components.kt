@@ -72,7 +72,7 @@ fun CommonTextField(
     autoCorrect: Boolean = false,
     imeAction: ImeAction = ImeAction.Default,
     onAction: KeyboardActions = KeyboardActions.Default,
-    resourceId: Int
+    errorMessage: String
 ) {
     OutlinedTextField(
         value = value,
@@ -92,7 +92,10 @@ fun CommonTextField(
         maxLines = 1,
         shape = RoundedCornerShape(16.dp)
     )
-    if (isError && resourceId > -1) ErrorText(text = stringResource(resourceId))
+
+    if (isError) {
+        ErrorText(text = errorMessage)
+    }
 }
 
 @ExperimentalMaterial3Api
@@ -105,7 +108,7 @@ fun PasswordTextField(
     isPasswordVisible: Boolean,
     isError: Boolean,
     isNewUser: Boolean,
-    resourceId: Int
+    errorMessage: String
 ) {
     val visualTransformation = if (isPasswordVisible) {
         VisualTransformation.None
@@ -138,7 +141,10 @@ fun PasswordTextField(
         maxLines = 1,
         shape = RoundedCornerShape(16.dp)
     )
-    if (isError && resourceId > -1) ErrorText(text = stringResource(resourceId))
+
+    if (isError) {
+        ErrorText(text = errorMessage)
+    }
 }
 
 @Composable

@@ -12,27 +12,46 @@ class LoginUtils {
     private val passwordRegex = Regex(PASSWORD_PATTERN)
 
     fun isEmailAddressValid(email: String): Boolean {
-        if (email.trim().isBlank()) return false
-        if (!email.trim().matches(emailRegex)) return false
+        if (email.trim().isBlank()) {
+            return false
+        }
+        if (!email.trim().matches(emailRegex)) {
+            return false
+        }
         return true
     }
 
     fun isPasswordValid(password: String): Boolean {
-        if (password.trim().isBlank()) return false
-        if (!password.trim().matches(passwordRegex)) return false
+        if (password.trim().isBlank()) {
+            return false
+        }
+        if (!password.trim().matches(passwordRegex)) {
+            return false
+        }
         return true
     }
 
     fun isConfirmationValid(password: String, confirmation: String): Boolean {
-        if (confirmation.trim().isBlank()) return false
-        if (password.trim() != confirmation.trim()) return false
+        if (!isPasswordValid(password)) {
+            return false
+        }
+        if (confirmation.trim().isBlank()) {
+            return false
+        }
+        if (password.trim() != confirmation.trim()) {
+            return false
+        }
         return true
     }
 
     fun isCorrectPassword(password: String, expectedHash: ByteArray, salt: ByteArray): Boolean {
         val passwordHash = hash(password, salt)
-        if (passwordHash.size != expectedHash.size) return false
-        return passwordHash.indices.all { passwordHash[it] == expectedHash[it] }
+        if (passwordHash.size != expectedHash.size){
+            return false
+        }
+        return passwordHash.indices.all {
+            passwordHash[it] == expectedHash[it]
+        }
     }
 
     fun hash(password: String, salt: ByteArray): ByteArray {
@@ -61,6 +80,7 @@ class LoginUtils {
         private const val TAG = "LoginUtils"
         private const val HASHING_ALGORITHM = "PBKDF2WithHmacSHA512"
         private const val EMAIL_PATTERN ="^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
-        private const val PASSWORD_PATTERN ="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%!\\-_?&])(?=\\S+\$).{8,24}"
+        private const val PASSWORD_PATTERN =
+            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%!\\-_?&])(?=\\S+\$).{8,24}"
     }
 }

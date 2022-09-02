@@ -20,24 +20,29 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Singleton
     @Provides
-    fun provideUserDao(userDatabase: UserDatabase): UserDao = userDatabase.userDao()
+    fun provideUserDao(userDatabase: UserDatabase): UserDao {
+        return userDatabase.userDao()
+    }
 
     @Singleton
     @Provides
-    fun provideUserDatabase(@ApplicationContext context: Context): UserDatabase =
-        Room.databaseBuilder(context, UserDatabase::class.java, "user_database")
+    fun provideUserDatabase(@ApplicationContext context: Context): UserDatabase {
+        return Room.databaseBuilder(context, UserDatabase::class.java, "user_database")
             .fallbackToDestructiveMigration()
             .build()
+    }
 
     @Singleton
     @Provides
-    fun provideExerciseDao(exerciseDatabase: ExerciseDatabase): ExerciseDao =
-        exerciseDatabase.exerciseDao()
+    fun provideExerciseDao(exerciseDatabase: ExerciseDatabase): ExerciseDao {
+        return exerciseDatabase.exerciseDao()
+    }
 
     @Singleton
     @Provides
-    fun provideExerciseDatabase(@ApplicationContext context: Context): ExerciseDatabase =
-        Room.databaseBuilder(context, ExerciseDatabase::class.java, "exercises_database")
-        .fallbackToDestructiveMigration()
-        .build()
+    fun provideExerciseDatabase(@ApplicationContext context: Context): ExerciseDatabase {
+        return Room.databaseBuilder(context, ExerciseDatabase::class.java, "exercises_database")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
 }
