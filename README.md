@@ -9,7 +9,7 @@ and working on APIs for user authentication and to store/retrieve workout logs.
 - For weight lifting: log weight used, number of sets, and number of repetitions
 - Two account modes: normal and "off the grid" mode
 - Off the grid mode stores all data locally on the device, including your account
-information. # WARNING: wiping data for the application will permanently delete
+information. **WARNING:** wiping data for the application will permanently delete
 your account and all workout logs. Your account and logs will NOT be recoverable.
 - Normal mode uses Kyle's API to create/authenticate user accounts. Workout logs
 will be stored locally on the device so they can be accessed offline, and backed
