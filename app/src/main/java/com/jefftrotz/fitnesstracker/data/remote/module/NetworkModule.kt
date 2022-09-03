@@ -1,6 +1,6 @@
 package com.jefftrotz.fitnesstracker.data.remote.module
 
-import com.jefftrotz.fitnesstracker.data.remote.ExerciseApi
+import com.jefftrotz.fitnesstracker.data.remote.WorkoutApi
 import com.jefftrotz.fitnesstracker.data.remote.UserApi
 import com.jefftrotz.fitnesstracker.util.Constants.BASE_URL
 
@@ -28,11 +28,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideExerciseApi(): ExerciseApi {
+    fun provideWorkoutApi(): WorkoutApi {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(ExerciseApi::class.java)
+            .create(WorkoutApi::class.java)
     }
 }

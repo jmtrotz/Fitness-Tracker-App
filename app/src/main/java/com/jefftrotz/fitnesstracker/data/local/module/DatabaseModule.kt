@@ -3,8 +3,8 @@ package com.jefftrotz.fitnesstracker.data.local.module
 import android.content.Context
 import androidx.room.Room
 
-import com.jefftrotz.fitnesstracker.data.local.exercise.ExerciseDatabase
-import com.jefftrotz.fitnesstracker.data.local.exercise.ExerciseDao
+import com.jefftrotz.fitnesstracker.data.local.exercise.WorkoutDatabase
+import com.jefftrotz.fitnesstracker.data.local.exercise.WorkoutDao
 import com.jefftrotz.fitnesstracker.data.local.user.UserDao
 import com.jefftrotz.fitnesstracker.data.local.user.UserDatabase
 
@@ -34,14 +34,14 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideExerciseDao(exerciseDatabase: ExerciseDatabase): ExerciseDao {
-        return exerciseDatabase.exerciseDao()
+    fun provideWorkoutDao(workoutDatabase: WorkoutDatabase): WorkoutDao {
+        return workoutDatabase.workoutDao()
     }
 
     @Singleton
     @Provides
-    fun provideExerciseDatabase(@ApplicationContext context: Context): ExerciseDatabase {
-        return Room.databaseBuilder(context, ExerciseDatabase::class.java, "exercises_database")
+    fun provideExerciseDatabase(@ApplicationContext context: Context): WorkoutDatabase {
+        return Room.databaseBuilder(context, WorkoutDatabase::class.java, "workout_database")
             .fallbackToDestructiveMigration()
             .build()
     }

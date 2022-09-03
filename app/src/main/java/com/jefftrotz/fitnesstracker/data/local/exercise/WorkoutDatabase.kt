@@ -10,6 +10,6 @@ import com.jefftrotz.fitnesstracker.util.converters.UuidConverter
 
 @Database(entities = [Exercise::class], version = 1, exportSchema = false)
 @TypeConverters(DateConverter::class, UuidConverter::class)
-abstract class ExerciseDatabase : RoomDatabase() {
-    abstract fun exerciseDao(): ExerciseDao
+abstract class WorkoutDatabase : RoomDatabase() {
+    abstract fun workoutDao(): WorkoutDao
 }
