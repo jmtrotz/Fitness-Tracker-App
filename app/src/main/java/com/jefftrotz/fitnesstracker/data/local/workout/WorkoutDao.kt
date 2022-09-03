@@ -1,4 +1,4 @@
-package com.jefftrotz.fitnesstracker.data.local.exercise
+package com.jefftrotz.fitnesstracker.data.local.workout
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,9 +6,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-
 import com.jefftrotz.fitnesstracker.model.Workout
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 
 @Dao
 interface WorkoutDao {
@@ -16,7 +16,7 @@ interface WorkoutDao {
     fun getAllWorkouts(): Flow<List<Workout>>
 
     @Query("SELECT * FROM workout_table WHERE workout_id = :id")
-    suspend fun getWorkoutById(id: String): Workout
+    suspend fun getWorkoutById(id: UUID): Workout
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWorkout(workout: Workout)

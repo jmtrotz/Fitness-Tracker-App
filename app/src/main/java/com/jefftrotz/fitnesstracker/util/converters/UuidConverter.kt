@@ -5,12 +5,12 @@ import java.util.UUID
 
 class UuidConverter {
     @TypeConverter
-    fun stringFromUuid(uuid: UUID): String {
+    fun uuidToString(uuid: UUID): String {
         return uuid.toString()
     }
 
     @TypeConverter
-    fun uuidFromString(string: String): UUID {
+    fun stringToUuid(string: String): UUID {
         return UUID.fromString(string)
     }
 }

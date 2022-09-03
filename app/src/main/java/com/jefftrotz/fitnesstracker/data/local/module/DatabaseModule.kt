@@ -2,12 +2,10 @@ package com.jefftrotz.fitnesstracker.data.local.module
 
 import android.content.Context
 import androidx.room.Room
-
-import com.jefftrotz.fitnesstracker.data.local.exercise.WorkoutDatabase
-import com.jefftrotz.fitnesstracker.data.local.exercise.WorkoutDao
+import com.jefftrotz.fitnesstracker.data.local.workout.WorkoutDatabase
+import com.jefftrotz.fitnesstracker.data.local.workout.WorkoutDao
 import com.jefftrotz.fitnesstracker.data.local.user.UserDao
 import com.jefftrotz.fitnesstracker.data.local.user.UserDatabase
-
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,7 +38,7 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideExerciseDatabase(@ApplicationContext context: Context): WorkoutDatabase {
+    fun provideWorkoutDatabase(@ApplicationContext context: Context): WorkoutDatabase {
         return Room.databaseBuilder(context, WorkoutDatabase::class.java, "workout_database")
             .fallbackToDestructiveMigration()
             .build()

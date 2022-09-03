@@ -49,8 +49,8 @@ class LoginUtils {
         if (passwordHash.size != expectedHash.size){
             return false
         }
-        return passwordHash.indices.all {
-            passwordHash[it] == expectedHash[it]
+        return passwordHash.indices.all { index ->
+            passwordHash[index] == expectedHash[index]
         }
     }
 

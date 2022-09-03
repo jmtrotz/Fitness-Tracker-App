@@ -2,10 +2,8 @@ package com.jefftrotz.fitnesstracker.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
 import com.jefftrotz.fitnesstracker.model.User
 import com.jefftrotz.fitnesstracker.repository.UserRepository
-
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +18,7 @@ class LoginViewModel @Inject constructor(private val repository: UserRepository)
         }
     }
 
-    fun addUser(
+    fun insertUser(
         email: String,
         password: ByteArray,
         passwordSalt: ByteArray,

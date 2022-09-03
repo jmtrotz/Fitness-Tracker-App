@@ -5,11 +5,11 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import javax.inject.Singleton
 
-// TODO: Finish GET and POST requests
+// TODO: Finalize networking
 @Singleton
 interface WorkoutApi {
     @GET(value = "workout")
-    suspend fun getWorkouts(): List<Workout>
+    suspend fun getWorkout(): Workout
 
     @POST(value = "")
     suspend fun postWorkout()

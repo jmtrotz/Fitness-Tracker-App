@@ -4,7 +4,6 @@ import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
 import java.util.Date
 import java.util.UUID
 
@@ -27,5 +26,5 @@ data class Workout(
     val description: String = "",
 
     @ColumnInfo(name = "workout_exercise_list")
-    val exerciseList: List<Exercise> = ArrayList(emptyList()),
+    val exerciseList: List<Exercise> = ArrayList(emptyList())
 )

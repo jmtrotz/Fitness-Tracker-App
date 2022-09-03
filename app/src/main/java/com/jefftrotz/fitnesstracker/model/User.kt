@@ -25,16 +25,27 @@ data class User(
     val localAccount: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (this === other){
+            return true
+        }
+        if (javaClass != other?.javaClass){
+            return false
+        }
 
         other as User
 
-        if (email != other.email) return false
-        if (!password.contentEquals(other.password)) return false
-        if (!passwordSalt.contentEquals(other.passwordSalt)) return false
-        if (localAccount != other.localAccount) return false
-
+        if (email != other.email){
+            return false
+        }
+        if (!password.contentEquals(other.password)){
+            return false
+        }
+        if (!passwordSalt.contentEquals(other.passwordSalt)){
+            return false
+        }
+        if (localAccount != other.localAccount){
+            return false
+        }
         return true
     }
 

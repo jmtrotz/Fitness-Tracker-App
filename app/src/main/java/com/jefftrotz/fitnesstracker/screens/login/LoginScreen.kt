@@ -7,20 +7,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
-
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
-
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,7 +26,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-
 import com.jefftrotz.fitnesstracker.R
 import com.jefftrotz.fitnesstracker.components.CommonTextField
 import com.jefftrotz.fitnesstracker.components.PasswordTextField
@@ -93,8 +89,8 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
             )
 
             if (isNewUser) {
-                AccountTypeSwitch(isLocalAccount) {
-                    isLocalAccount = !isLocalAccount
+                AccountTypeSwitch(isLocalAccount) { isChecked ->
+                    isLocalAccount = isChecked
                 }
             }
 
@@ -109,7 +105,9 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
                 loginUtils = loginUtils,
                 onClick = {
                     isNewUser = !isNewUser
-                    if (confirmation.isNotBlank()) confirmation = ""
+                    if (confirmation.isNotBlank()) {
+                        confirmation = ""
+                    }
                 }
             ) { loginError ->
                 error = loginError
@@ -176,7 +174,9 @@ private fun LoginForm(
         value = password,
         onValueChange = onPasswordChanged,
         label = stringResource(R.string.placeholder_password),
-        onClick = { isPasswordVisible = !isPasswordVisible },
+        onClick = {
+            isPasswordVisible = !isPasswordVisible
+        },
         isPasswordVisible = isPasswordVisible,
         isError = error == LoginError.PASSWORD_ERROR,
         isNewUser = isNewUser,
@@ -194,7 +194,9 @@ private fun LoginForm(
             value = confirmation,
             onValueChange = onConfirmationChanged,
             label = stringResource(R.string.placeholder_confirm_password),
-            onClick = { isConfirmationVisible = !isConfirmationVisible },
+            onClick = {
+                isConfirmationVisible = !isConfirmationVisible
+            },
             isPasswordVisible = isConfirmationVisible,
             isError = error == LoginError.CONFIRMATION_ERROR,
             isNewUser = !isNewUser,
@@ -224,7 +226,8 @@ private fun AccountTypeSwitch(isLocalAccount: Boolean, onCheckedChanged: (Boolea
         stringResource(R.string.off_the_grid_mode_disabled_label)
     }
 
-    Text(text = switchLabel,
+    Text(
+        text = switchLabel,
         modifier = Modifier
             .fillMaxWidth(0.8f)
             .padding(start = 8.dp, end = 8.dp)
@@ -246,6 +249,7 @@ private fun ActionButtons(
     onError: (LoginError) -> Unit
 ) {
     Row {
+
         Button(
             onClick = onClick,
             modifier = Modifier.padding(top = 8.dp, end = 30.dp)
@@ -271,7 +275,9 @@ private fun ActionButtons(
                     onError = onError
                 ) {
                     navController.navigate(FitnessTrackerScreens.MainScreen.name) {
-                        popUpTo(FitnessTrackerScreens.LoginScreen.name) { inclusive = true }
+                        popUpTo(FitnessTrackerScreens.LoginScreen.name) {
+                            inclusive = true
+                        }
                     }
                 }
             },
@@ -328,7 +334,7 @@ private fun verifyInput(
     } else if (user == null && isNewUser) {
         val salt = loginUtils.generateSalt()
         val hashedPassword = loginUtils.hash(password, salt)
-        viewModel.addUser(email, hashedPassword, salt, isLocalAccount)
+        viewModel.insertUser(email, hashedPassword, salt, isLocalAccount)
         onVerificationSuccess()
     } else if (user != null) {
         if (loginUtils.isCorrectPassword(password, user.password, user.passwordSalt)) {

@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import javax.inject.Singleton
 
-// TODO: Finish GET and POST requests
+// TODO: Finalize networking
 @Singleton
 interface UserApi {
     @GET(value = "user")
