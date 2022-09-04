@@ -3,10 +3,13 @@ package com.jefftrotz.fitnesstracker.navigation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.jefftrotz.fitnesstracker.screens.*
+import com.jefftrotz.fitnesstracker.screens.details.DetailsScreen
 import com.jefftrotz.fitnesstracker.screens.login.LoginScreen
 import com.jefftrotz.fitnesstracker.screens.main.MainScreen
 import com.jefftrotz.fitnesstracker.screens.login.LoginViewModel
@@ -28,8 +31,20 @@ fun FitnessTrackerNavigation() {
             AboutScreen(navController)
         }
 
-        composable(FitnessTrackerScreens.DetailsScreen.name) {
-            DetailsScreen(navController)
+        val argName = "id"
+        val detailsScreenName = FitnessTrackerScreens.DetailsScreen.name
+        composable(
+            route = "$detailsScreenName/{$argName",
+            arguments = listOf(navArgument(argName) {
+                type = NavType.StringType
+            })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getString(argName).let { workoutId ->
+                DetailsScreen(
+                    navController = navController,
+                    workoutId = workoutId.toString()
+                )
+            }
         }
 
         composable(FitnessTrackerScreens.LoginScreen.name) {
@@ -39,7 +54,7 @@ fun FitnessTrackerNavigation() {
 
         composable(FitnessTrackerScreens.MainScreen.name) {
             val viewModel = hiltViewModel<MainViewModel>()
-            MainScreen(navController, viewModel)
+            MainScreen()//navController, viewModel)
         }
 
         composable(FitnessTrackerScreens.SearchScreen.name) {

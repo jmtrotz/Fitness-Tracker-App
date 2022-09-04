@@ -63,7 +63,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
         viewModel.getUserByEmail(email)
     }
 
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Surface (modifier = Modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -143,12 +143,12 @@ private fun LoginForm(
 
     val emailError = if (error == LoginError.EMAIL_ERROR) {
         if (email.trim().isBlank()) {
-            stringResource(R.string.error_email_blank)
+            stringResource(id = R.string.error_email_blank)
         } else {
-            stringResource(R.string.error_invalid_email)
+            stringResource(id =  R.string.error_invalid_email)
         }
     } else if (error == LoginError.ACCOUNT_EXISTS_ERROR) {
-        stringResource(R.string.error_account_exists)
+        stringResource(id = R.string.error_account_exists)
     } else {
         ""
     }
@@ -156,7 +156,7 @@ private fun LoginForm(
     CommonTextField(
         value = email,
         onValueChange = onEmailChanged,
-        label = stringResource(R.string.placeholder_email),
+        label = stringResource(id = R.string.placeholder_email),
         isError = error == LoginError.EMAIL_ERROR || error == LoginError.ACCOUNT_EXISTS_ERROR,
         keyboardType = KeyboardType.Email,
         autoCorrect = false,
@@ -165,15 +165,15 @@ private fun LoginForm(
     )
 
     val passwordError = if (password.trim().isBlank()) {
-            stringResource(R.string.error_password_blank)
+            stringResource(id = R.string.error_password_blank)
         } else {
-            stringResource(R.string.error_invalid_password)
+            stringResource(id = R.string.error_invalid_password)
         }
 
     PasswordTextField(
         value = password,
         onValueChange = onPasswordChanged,
-        label = stringResource(R.string.placeholder_password),
+        label = stringResource(id = R.string.placeholder_password),
         onClick = {
             isPasswordVisible = !isPasswordVisible
         },
@@ -185,15 +185,15 @@ private fun LoginForm(
 
     if (isNewUser) {
         val confirmationError = if (confirmation.trim().isBlank()) {
-                stringResource(R.string.error_confirmation_blank)
+                stringResource(id = R.string.error_confirmation_blank)
             } else {
-                stringResource(R.string.error_passwords_do_not_match)
+                stringResource(id = R.string.error_passwords_do_not_match)
             }
 
         PasswordTextField(
             value = confirmation,
             onValueChange = onConfirmationChanged,
-            label = stringResource(R.string.placeholder_confirm_password),
+            label = stringResource(id = R.string.placeholder_confirm_password),
             onClick = {
                 isConfirmationVisible = !isConfirmationVisible
             },
@@ -209,7 +209,7 @@ private fun LoginForm(
 private fun AccountTypeSwitch(isLocalAccount: Boolean, onCheckedChanged: (Boolean) -> Unit) {
     Row {
         Text(
-            text = stringResource(R.string.toggle_label_off_the_grid_mode),
+            text = stringResource(id = R.string.toggle_label_off_the_grid_mode),
             modifier = Modifier.padding(top = 12.dp, end = 54.dp)
         )
 
@@ -221,9 +221,9 @@ private fun AccountTypeSwitch(isLocalAccount: Boolean, onCheckedChanged: (Boolea
     }
 
     val switchLabel = if (isLocalAccount) {
-        stringResource(R.string.off_the_grid_mode_enabled_label)
+        stringResource(id = R.string.off_the_grid_mode_enabled_label)
     } else {
-        stringResource(R.string.off_the_grid_mode_disabled_label)
+        stringResource(id = R.string.off_the_grid_mode_disabled_label)
     }
 
     Text(
@@ -248,16 +248,20 @@ private fun ActionButtons(
     onClick: () -> Unit,
     onError: (LoginError) -> Unit
 ) {
-    Row {
-
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp),
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
         Button(
             onClick = onClick,
             modifier = Modifier.padding(top = 8.dp, end = 30.dp)
         ) {
             val buttonText = if (isNewUser) {
-                stringResource(R.string.button_label_cancel)
+                stringResource(id = R.string.button_label_cancel)
             } else {
-                stringResource(R.string.button_label_create_account)
+                stringResource(id = R.string.button_label_create_account)
             }
             Text(text = buttonText)
         }
@@ -284,9 +288,9 @@ private fun ActionButtons(
             modifier = Modifier.padding(start = 30.dp, top = 8.dp)
         ) {
             val buttonText = if (isNewUser) {
-                stringResource(R.string.button_label_continue)
+                stringResource(id = R.string.button_label_continue)
             } else {
-                stringResource(R.string.button_label_login)
+                stringResource(id = R.string.button_label_login)
             }
             Text(text = buttonText)
         }
@@ -297,7 +301,7 @@ private fun ActionButtons(
 private fun ShowToast(onShow: () -> Unit) {
     Toast.makeText(
         LocalContext.current,
-        stringResource(R.string.error_incorrect_credentials),
+        stringResource(id = R.string.error_incorrect_credentials),
         Toast.LENGTH_LONG
     ).show()
     onShow()

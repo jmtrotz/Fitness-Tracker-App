@@ -26,6 +26,7 @@
     <string name="content_description_show_password_icon">Password Visibility</string>
 
     <!-- Main screen resources -->
+    <string name="top_bar_title">Workouts</string>
     <string name="content_description_menu_button_icon">Menu</string>
 
     <!-- UI component resources -->
