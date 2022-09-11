@@ -5,6 +5,6 @@ import androidx.navigation.NavController
 import com.jefftrotz.fitnesstracker.model.Workout
 
 @Composable
-fun DetailsScreen(navController: NavController, workoutId: String) {
+fun DetailsScreen(navController: NavController, workoutId: String?) {
 
 }

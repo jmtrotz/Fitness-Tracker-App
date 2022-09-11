@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 import com.jefftrotz.fitnesstracker.R
-import com.jefftrotz.fitnesstracker.navigation.FitnessTrackerScreens
+import com.jefftrotz.fitnesstracker.navigation.Screen
 import kotlinx.coroutines.delay
 
 @Composable
@@ -37,8 +37,8 @@ fun SplashScreen(navController: NavController) {
         }))
         delay(timeMillis = 2000L)
         // TODO: Check if user is already logged in
-        navController.navigate(FitnessTrackerScreens.LoginScreen.name) {
-            popUpTo(FitnessTrackerScreens.SplashScreen.name) {
+        navController.navigate(Screen.LoginScreen.name) {
+            popUpTo(Screen.SplashScreen.name) {
                 inclusive = true
             }
         }

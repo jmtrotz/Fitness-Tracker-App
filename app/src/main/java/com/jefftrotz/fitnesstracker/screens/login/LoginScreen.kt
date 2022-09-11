@@ -29,7 +29,7 @@ import androidx.navigation.NavController
 import com.jefftrotz.fitnesstracker.R
 import com.jefftrotz.fitnesstracker.components.CommonTextField
 import com.jefftrotz.fitnesstracker.components.PasswordTextField
-import com.jefftrotz.fitnesstracker.navigation.FitnessTrackerScreens
+import com.jefftrotz.fitnesstracker.navigation.Screen
 import com.jefftrotz.fitnesstracker.util.login.LoginError
 import com.jefftrotz.fitnesstracker.util.login.LoginUtils
 
@@ -278,8 +278,8 @@ private fun ActionButtons(
                     loginUtils = loginUtils,
                     onError = onError
                 ) {
-                    navController.navigate(FitnessTrackerScreens.MainScreen.name) {
-                        popUpTo(FitnessTrackerScreens.LoginScreen.name) {
+                    navController.navigate(Screen.MainScreen.route) {
+                        popUpTo(Screen.LoginScreen.route) {
                             inclusive = true
                         }
                     }

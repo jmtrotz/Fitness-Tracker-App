@@ -19,7 +19,7 @@ import com.jefftrotz.fitnesstracker.R
 import com.jefftrotz.fitnesstracker.components.AddButton
 import com.jefftrotz.fitnesstracker.components.TopBar
 import com.jefftrotz.fitnesstracker.model.Workout
-import com.jefftrotz.fitnesstracker.navigation.FitnessTrackerScreens
+import com.jefftrotz.fitnesstracker.navigation.Screen
 import com.jefftrotz.fitnesstracker.util.formatDate
 
 @ExperimentalMaterial3Api
@@ -59,7 +59,7 @@ fun WorkoutList(navController: NavController, workoutList: List<Workout>) {
     ) {
         items(items = workoutList) { workout ->
             WorkoutItem(workout) {
-                navController.navigate(FitnessTrackerScreens.DetailsScreen.name)
+                navController.navigate(Screen.DetailsScreen.withArgs(workout.id.toString()))
             }
         }
     }

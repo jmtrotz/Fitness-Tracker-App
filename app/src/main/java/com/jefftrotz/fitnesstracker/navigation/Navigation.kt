@@ -17,55 +17,55 @@ import com.jefftrotz.fitnesstracker.screens.main.MainViewModel
 
 @ExperimentalMaterial3Api
 @Composable
-fun FitnessTrackerNavigation() {
+fun Navigation() {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = FitnessTrackerScreens.LoginScreen.name
+        startDestination = Screen.LoginScreen.route
         // Splash screen commented out for now. One seems to be
         // automatically provided for me by MaterialDesign 3?
-        //FitnessTrackerScreens.SplashScreen.name
+        //Screen.SplashScreen.name
     ) {
-        composable(FitnessTrackerScreens.AboutScreen.name) {
+        composable(Screen.AboutScreen.route) {
             AboutScreen(navController)
         }
 
-        val argName = "id"
-        val detailsScreenName = FitnessTrackerScreens.DetailsScreen.name
         composable(
-            route = "$detailsScreenName/{$argName",
-            arguments = listOf(navArgument(argName) {
-                type = NavType.StringType
-            })
-        ) { backStackEntry ->
-            backStackEntry.arguments?.getString(argName).let { workoutId ->
-                DetailsScreen(
-                    navController = navController,
-                    workoutId = workoutId.toString()
-                )
-            }
+            route = Screen.DetailsScreen.route + "?id={id}",
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                    nullable = true
+                }
+            )
+        ) { entry ->
+            DetailsScreen(
+                navController = navController,
+                workoutId = entry.arguments?.getString("name")
+            )
         }
 
-        composable(FitnessTrackerScreens.LoginScreen.name) {
+        composable(Screen.LoginScreen.route) {
             val viewModel = hiltViewModel<LoginViewModel>()
             LoginScreen(navController, viewModel)
         }
 
-        composable(FitnessTrackerScreens.MainScreen.name) {
+        composable(Screen.MainScreen.route) {
             val viewModel = hiltViewModel<MainViewModel>()
-            MainScreen()//navController, viewModel)
+            MainScreen(navController, viewModel)
         }
 
-        composable(FitnessTrackerScreens.SearchScreen.name) {
+        composable(Screen.SearchScreen.route) {
             SearchScreen(navController)
         }
 
-        composable(FitnessTrackerScreens.SettingsScreen.name) {
+        composable(Screen.SettingsScreen.route) {
             SettingsScreen(navController)
         }
 
-        composable(FitnessTrackerScreens.SplashScreen.name) {
+        composable(Screen.SplashScreen.route) {
             SplashScreen(navController)
         }
     }
