@@ -9,7 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jefftrotz.fitnesstracker.screens.*
-import com.jefftrotz.fitnesstracker.screens.details.DetailsScreen
+import com.jefftrotz.fitnesstracker.screens.workoutDetails.WorkoutDetailsScreen
+import com.jefftrotz.fitnesstracker.screens.workoutDetails.WorkoutDetailsViewModel
 import com.jefftrotz.fitnesstracker.screens.login.LoginScreen
 import com.jefftrotz.fitnesstracker.screens.main.MainScreen
 import com.jefftrotz.fitnesstracker.screens.login.LoginViewModel
@@ -32,7 +33,7 @@ fun Navigation() {
         }
 
         composable(
-            route = Screen.DetailsScreen.route + "?id={id}",
+            route = Screen.WorkoutDetailsScreen.route + "?id={id}",
             arguments = listOf(
                 navArgument("id") {
                     type = NavType.StringType
@@ -41,9 +42,11 @@ fun Navigation() {
                 }
             )
         ) { entry ->
-            DetailsScreen(
+            val viewModel = hiltViewModel<WorkoutDetailsViewModel>()
+            WorkoutDetailsScreen(
                 navController = navController,
-                workoutId = entry.arguments?.getString("name")
+                viewModel = viewModel,
+                id = entry.arguments?.getString("id")
             )
         }
 

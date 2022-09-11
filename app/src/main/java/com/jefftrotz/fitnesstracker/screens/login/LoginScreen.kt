@@ -156,6 +156,9 @@ private fun LoginForm(
     CommonTextField(
         value = email,
         onValueChange = onEmailChanged,
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .padding(4.dp),
         label = stringResource(id = R.string.placeholder_email),
         isError = error == LoginError.EMAIL_ERROR || error == LoginError.ACCOUNT_EXISTS_ERROR,
         keyboardType = KeyboardType.Email,
@@ -173,6 +176,9 @@ private fun LoginForm(
     PasswordTextField(
         value = password,
         onValueChange = onPasswordChanged,
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .padding(4.dp),
         label = stringResource(id = R.string.placeholder_password),
         onClick = {
             isPasswordVisible = !isPasswordVisible
@@ -193,6 +199,9 @@ private fun LoginForm(
         PasswordTextField(
             value = confirmation,
             onValueChange = onConfirmationChanged,
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .padding(4.dp),
             label = stringResource(id = R.string.placeholder_confirm_password),
             onClick = {
                 isConfirmationVisible = !isConfirmationVisible

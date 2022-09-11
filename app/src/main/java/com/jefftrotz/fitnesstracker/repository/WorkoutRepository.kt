@@ -1,5 +1,6 @@
 package com.jefftrotz.fitnesstracker.repository
 
+import com.jefftrotz.fitnesstracker.data.DataWrapper
 import com.jefftrotz.fitnesstracker.data.local.workout.WorkoutDao
 import com.jefftrotz.fitnesstracker.data.remote.WorkoutApi
 import com.jefftrotz.fitnesstracker.model.Workout
@@ -17,7 +18,7 @@ class WorkoutRepository @Inject constructor(
         return workoutDao.getAllWorkouts().flowOn(Dispatchers.IO)
     }
 
-    suspend fun getWorkoutById(id: UUID): Workout {
+    suspend fun getWorkoutById(id: UUID): DataWrapper<Workout> {
         return workoutDao.getWorkoutById(id)
     }
 
