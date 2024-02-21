@@ -2,74 +2,79 @@ package com.jefftrotz.fitnesstracker.navigation
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.jefftrotz.fitnesstracker.screens.*
-import com.jefftrotz.fitnesstracker.screens.workoutDetails.WorkoutDetailsScreen
-import com.jefftrotz.fitnesstracker.screens.workoutDetails.WorkoutDetailsViewModel
-import com.jefftrotz.fitnesstracker.screens.login.LoginScreen
-import com.jefftrotz.fitnesstracker.screens.main.MainScreen
-import com.jefftrotz.fitnesstracker.screens.login.LoginViewModel
-import com.jefftrotz.fitnesstracker.screens.main.MainViewModel
+import androidx.navigation.navigation
 
-@ExperimentalMaterial3Api
+import com.jefftrotz.fitnesstracker.model.Workout.Companion.workoutFromString
+import com.jefftrotz.fitnesstracker.ui.screens.AboutScreen
+import com.jefftrotz.fitnesstracker.ui.screens.SearchScreen
+import com.jefftrotz.fitnesstracker.ui.screens.SplashScreen
+import com.jefftrotz.fitnesstracker.ui.screens.account.AccountScreen
+import com.jefftrotz.fitnesstracker.ui.screens.account.CreateAccount
+import com.jefftrotz.fitnesstracker.ui.screens.exercise.ExerciseDetailsScreen
+import com.jefftrotz.fitnesstracker.ui.screens.main.MainScreen
+import com.jefftrotz.fitnesstracker.ui.screens.workout.WorkoutDetailsScreen
+import com.jefftrotz.fitnesstracker.util.Constants
+
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun Navigation() {
     val navController = rememberNavController()
 
+    // TODO Remove splash screen?. Seems to be automatically provided by MaterialDesign 3?
     NavHost(
         navController = navController,
-        startDestination = Screen.LoginScreen.route
-        // Splash screen commented out for now. One seems to be
-        // automatically provided for me by MaterialDesign 3?
-        //Screen.SplashScreen.name
+        startDestination = Screens.SplashScreen.route
     ) {
-        composable(Screen.AboutScreen.route) {
-            AboutScreen(navController)
+        navigation(startDestination = Screens.LoginScreen.route, route = "login") {
+            composable(Screens.CreateAccount.route) {
+                CreateAccount(navController = navController)
+            }
+        }
+
+        navigation(startDestination = Screens.SettingsScreen.route, route = "settings") {
+            composable(Screens.AboutScreen.route) {
+                AboutScreen(navController = navController)
+            }
+            composable(Screens.AccountScreen.route) {
+                AccountScreen(navController = navController)
+            }
+        }
+
+        composable(Screens.ExerciseDetailsScreen.route) {
+            ExerciseDetailsScreen(navController = navController)
+        }
+
+        composable(Screens.MainScreen.route) {
+            MainScreen(navController = navController)
+        }
+
+        composable(Screens.SearchScreen.route) {
+            SearchScreen(navController = navController)
+        }
+
+        composable(Screens.SplashScreen.route) {
+            SplashScreen(navController = navController)
         }
 
         composable(
-            route = Screen.WorkoutDetailsScreen.route + "?id={id}",
+            route = Screens.WorkoutDetailsScreen.route + "?${Constants.WORKOUT_ID_KEY}={${Constants.WORKOUT_ID_KEY}}",
             arguments = listOf(
-                navArgument("id") {
+                navArgument(Constants.WORKOUT_ID_KEY) {
                     type = NavType.StringType
                     defaultValue = ""
-                    nullable = true
                 }
             )
         ) { entry ->
-            val viewModel = hiltViewModel<WorkoutDetailsViewModel>()
-            WorkoutDetailsScreen(
-                navController = navController,
-                viewModel = viewModel,
-                id = entry.arguments?.getString("id")
-            )
-        }
-
-        composable(Screen.LoginScreen.route) {
-            val viewModel = hiltViewModel<LoginViewModel>()
-            LoginScreen(navController, viewModel)
-        }
-
-        composable(Screen.MainScreen.route) {
-            val viewModel = hiltViewModel<MainViewModel>()
-            MainScreen(navController, viewModel)
-        }
-
-        composable(Screen.SearchScreen.route) {
-            SearchScreen(navController)
-        }
-
-        composable(Screen.SettingsScreen.route) {
-            SettingsScreen(navController)
-        }
-
-        composable(Screen.SplashScreen.route) {
-            SplashScreen(navController)
+            val args = entry.arguments?.getString(Constants.WORKOUT_ID_KEY)
+            if (args != null) {
+                val workout = args.workoutFromString()
+                WorkoutDetailsScreen(navController = navController, workout = workout)
+            }
         }
     }
 }

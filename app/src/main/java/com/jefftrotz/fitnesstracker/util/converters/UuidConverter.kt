@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import java.util.UUID
 
 class UuidConverter {
+
     @TypeConverter
     fun uuidToString(uuid: UUID): String {
         return uuid.toString()

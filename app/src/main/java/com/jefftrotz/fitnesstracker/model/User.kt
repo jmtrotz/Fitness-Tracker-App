@@ -1,59 +1,89 @@
 package com.jefftrotz.fitnesstracker.model
 
-import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.jefftrotz.fitnesstracker.model.Workout.Companion.workoutListFromCharList
 
-@Entity(tableName = "user_table")
+@Entity(tableName = "users")
 data class User(
+
     @PrimaryKey
-    @NonNull
-    @ColumnInfo(name = "user_email")
+    @ColumnInfo(name = "email")
     val email: String,
 
-    @NonNull
-    @ColumnInfo(name = "user_password")
+    @ColumnInfo(name = "password")
     val password: ByteArray,
 
-    @NonNull
-    @ColumnInfo(name = "user_password_salt")
+    @ColumnInfo(name = "password_salt")
     val passwordSalt: ByteArray,
 
-    @NonNull
-    @ColumnInfo(name = "user_local_account")
-    val localAccount: Boolean
+    @ColumnInfo(name = "is_local_only")
+    val isLocalOnly: Boolean,
+
+    @ColumnInfo(name = "workouts")
+    val workouts: List<Workout> = arrayListOf()
 ) {
+
+    override fun toString(): String {
+        return "email: $email, password: $password, passwordSalt: $passwordSalt, isLocalOnly: $isLocalOnly, workouts: $workouts"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other){
             return true
         }
-        if (javaClass != other?.javaClass){
+
+        if (this.javaClass != other?.javaClass) {
             return false
         }
 
         other as User
 
-        if (email != other.email){
+        if (this.email != other.email) {
             return false
         }
-        if (!password.contentEquals(other.password)){
+
+        if (!this.password.contentEquals(other.password)) {
             return false
         }
-        if (!passwordSalt.contentEquals(other.passwordSalt)){
+
+        if (!this.passwordSalt.contentEquals(other.passwordSalt)) {
             return false
         }
-        if (localAccount != other.localAccount){
+
+        if (!this.isLocalOnly == other.isLocalOnly) {
             return false
         }
-        return true
+
+        return this.workouts == other.workouts
     }
 
     override fun hashCode(): Int {
         var result = email.hashCode()
         result = 31 * result + password.contentHashCode()
         result = 31 * result + passwordSalt.contentHashCode()
-        result = 31 * result + localAccount.hashCode()
+        result = 31 * result + isLocalOnly.hashCode()
+        result = 31 * result + workouts.hashCode()
         return result
+    }
+
+    companion object {
+
+        fun String.userFromString() : User {
+            val email = this.substringAfter("email: ").substringBefore(",")
+            val password = this.substringAfter("password: ").substringBefore(",")
+            val passwordSalt = this.substringAfter("passwordSalt: ").substringBefore(",")
+            val isLocalOnly = this.substringAfter("isLocalOnly: ").substringBefore(",")
+            val workouts = this.substringAfter("workouts: ").substringBefore(",")
+
+            return User(
+                email = email,
+                password = password.toByteArray(),
+                passwordSalt = passwordSalt.toByteArray(),
+                isLocalOnly = isLocalOnly.toBoolean(),
+                workouts = workouts.toList().workoutListFromCharList()
+            )
+        }
     }
 }
