@@ -1,4 +1,4 @@
-package com.jefftrotz.fitnesstracker.ui.usecases
+package com.jefftrotz.fitnesstracker.ui.usecases.user
 
 import com.jefftrotz.fitnesstracker.repository.Repository
 import dagger.Binds
@@ -9,12 +9,12 @@ import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object UseCasesModule {
+object UserUseCasesModule {
 
     @Binds
     @ViewModelScoped
-    fun provideUseCases(repository: Repository): UseCases {
-        return UseCases(
+    fun provideUseCases(repository: Repository): UserUseCases {
+        return UserUseCases(
             getAllUsers = GetAllUsers(repository),
             getUser = GetUser(repository),
             addUser = AddUser(repository),

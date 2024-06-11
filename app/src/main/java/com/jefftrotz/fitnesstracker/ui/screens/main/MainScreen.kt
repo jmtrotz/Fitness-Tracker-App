@@ -3,9 +3,9 @@ package com.jefftrotz.fitnesstracker.ui.screens.main
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -13,19 +13,24 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 import com.jefftrotz.fitnesstracker.R
@@ -35,40 +40,42 @@ import com.jefftrotz.fitnesstracker.ui.components.ItemList
 import com.jefftrotz.fitnesstracker.ui.components.ListItem
 import com.jefftrotz.fitnesstracker.ui.components.ShowDialog
 import com.jefftrotz.fitnesstracker.ui.components.TopBar
-import com.jefftrotz.fitnesstracker.model.states.ErrorState
+
 import com.jefftrotz.fitnesstracker.model.states.LoadingState
 import com.jefftrotz.fitnesstracker.model.states.MainState
 import com.jefftrotz.fitnesstracker.util.formatDate
-import com.jefftrotz.fitnesstracker.viewmodel.BaseViewModel
+
 import java.util.ArrayList
 
 @Composable
 fun MainScreen(navController: NavController) {
 
-    val viewModel: BaseViewModel by viewModels()
-    val state = viewModel.getUIStateFlow().collectAsState()
+    val snackbarState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+    val viewModel = hiltViewModel<MainViewModel>()
+    val uiState = viewModel.getUIStateFlow().collectAsState()
 
-    when (state.value) {
+    when (uiState.value) {
         is MainState -> {
-            val newState = state.value as MainState
-            renderScreen(navController = navController, state = newState)
+            val newState = uiState.value as MainState
+            RenderScreen(navController = navController, state = newState)
         }
         is LoadingState -> CircularProgressIndicator()
-        is ErrorState -> CircularProgressIndicator() // TODO: Handle
+    }
+
+    LaunchedEffect(key1 = coroutineScope.coroutineContext) {
+        viewModel.getSideEffectFlow().collect { message ->
+            snackbarState.showSnackbar(message = message)
+        }
     }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun renderScreen(navController: NavController, state: MainState) {
+fun RenderScreen(navController: NavController, state: MainState) {
 
-    var isMenuExpanded by remember {
-        mutableStateOf(false)
-    }
-
-    var showLogoutDialog by remember {
-        mutableStateOf(false)
-    }
+    var showLogoutDialog by remember { mutableStateOf(false) }
+    var isMenuExpanded by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -121,7 +128,7 @@ fun renderScreen(navController: NavController, state: MainState) {
         },
         floatingActionButton = {
             AddButton {
-                navController.navigate(Screens.WorkoutDetailsScreen.route)
+                navController.navigate(Screens.CreateWorkoutScreen.route)
             }
         }
     ) { paddingValues ->
@@ -137,8 +144,7 @@ fun renderScreen(navController: NavController, state: MainState) {
                 ItemList(state.workouts) { workout ->
                     val details = ArrayList<String>()
                     if (workout.description.isNotBlank()) {
-                        details.add(stringResource(id = R.string.workout_description,
-                            workout.description))
+                        details.add(stringResource(id = R.string.workout_description, workout.description))
                     }
 
                     ListItem(
@@ -146,9 +152,7 @@ fun renderScreen(navController: NavController, state: MainState) {
                         itemDetails = formatDate(workout.date.time),
                         expandedDetails = details
                     ) {
-                        navController.navigate(Screens
-                            .WorkoutDetailsScreen
-                            .withArgs(workout.id.toString()))
+                        navController.navigate(Screens.EditWorkoutScreen.route)
                     }
                 }
 

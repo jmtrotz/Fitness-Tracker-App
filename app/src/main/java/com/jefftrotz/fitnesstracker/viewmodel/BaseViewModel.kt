@@ -13,6 +13,11 @@ abstract class BaseViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(UIState())
     private val _userIntent = MutableStateFlow(UserIntent())
+    private val _sideEffect = MutableStateFlow("")
+
+    fun getUIStateFlow(): StateFlow<UIState> {
+        return _uiState.asStateFlow()
+    }
 
     protected fun setUIState(state: UIState) {
         viewModelScope.launch {
@@ -20,8 +25,8 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    fun getUIStateFlow(): StateFlow<UIState> {
-        return _uiState.asStateFlow()
+    protected fun getUserIntentFlow(): StateFlow<UserIntent> {
+        return _userIntent.asStateFlow()
     }
 
     fun setUserIntent(intent: UserIntent) {
@@ -30,7 +35,13 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    protected fun getUserIntentFlow(): StateFlow<UserIntent> {
-        return _userIntent.asStateFlow()
+    fun getSideEffectFlow(): StateFlow<String> {
+        return _sideEffect.asStateFlow()
+    }
+
+    protected fun setSideEffect(message: String) {
+        viewModelScope.launch {
+            _sideEffect.emit(message)
+        }
     }
 }

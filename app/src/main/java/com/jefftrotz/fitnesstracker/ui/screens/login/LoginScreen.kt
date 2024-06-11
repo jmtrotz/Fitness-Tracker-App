@@ -1,31 +1,33 @@
 package com.jefftrotz.fitnesstracker.ui.screens.login
 
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
+
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 import com.jefftrotz.fitnesstracker.R
@@ -37,13 +39,14 @@ import com.jefftrotz.fitnesstracker.model.states.LoadingState
 import com.jefftrotz.fitnesstracker.model.states.LoginState
 import com.jefftrotz.fitnesstracker.model.intents.Login
 import com.jefftrotz.fitnesstracker.model.intents.UpdateState
-import com.jefftrotz.fitnesstracker.model.states.ErrorState
 import com.jefftrotz.fitnesstracker.viewmodel.BaseViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
 
-    val viewModel: BaseViewModel by viewModels()
+    val snackbarState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+    val viewModel = hiltViewModel<LoginViewModel>()
     val state = viewModel.getUIStateFlow().collectAsState()
 
     when (state.value) {
@@ -56,19 +59,21 @@ fun LoginScreen(navController: NavController) {
                     }
                 }
             } else {
-                renderScreen(viewModel = viewModel, state = newState)
+                RenderScreen(viewModel = viewModel, state = newState)
             }
         }
         is LoadingState -> CircularProgressIndicator()
-        is ErrorState -> {
-            val error = state.value as ErrorState
-            ShowToast(message = error.message)
+    }
+
+    LaunchedEffect(key1 = coroutineScope.coroutineContext) {
+        viewModel.getSideEffectFlow().collect { message ->
+            snackbarState.showSnackbar(message = message)
         }
     }
 }
 
 @Composable
-fun renderScreen(viewModel: BaseViewModel, state: LoginState) {
+fun RenderScreen(viewModel: BaseViewModel, state: LoginState) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -111,12 +116,12 @@ private fun LoginForm(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .padding(4.dp),
-            label = stringResource(id = R.string.placeholder_email),
+            label = emailState.hint,
             isError = emailState.isError,
             keyboardType = KeyboardType.Email,
             autoCorrect = false,
             imeAction = ImeAction.Next,
-            errorMessage = "" // TODO: Fix
+            errorMessage = emailState.errorMessage
         )
         PasswordTextField(
             value = passwordState.text,
@@ -124,7 +129,7 @@ private fun LoginForm(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .padding(4.dp),
-            label = stringResource(id = R.string.placeholder_password),
+            label = passwordState.hint,
             onClick = {
                 state.isPasswordVisible = !state.isPasswordVisible
                 val intent = UpdateState(newState = state)
@@ -160,9 +165,4 @@ private fun ActionButtons(viewModel: BaseViewModel) {
             Text(text = buttonText)
         }
     }
-}
-
-@Composable
-private fun ShowToast(message: String) {
-    Toast.makeText(LocalContext.current, message, Toast.LENGTH_SHORT).show()
 }

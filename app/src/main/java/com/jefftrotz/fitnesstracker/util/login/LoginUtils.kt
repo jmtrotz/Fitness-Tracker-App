@@ -1,9 +1,7 @@
 package com.jefftrotz.fitnesstracker.util.login
 
 import android.util.Log
-import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
-import java.security.spec.InvalidKeySpecException
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
@@ -31,32 +29,24 @@ object LoginUtils {
     }
 
     fun verifyPassword(password: String, expectedHash: ByteArray, salt: ByteArray): Boolean {
-        val passwordHash = hash(password, salt)
-        if (passwordHash.size != expectedHash.size){
+        try {
+            val keySpec = PBEKeySpec(password.toCharArray(), salt, 1000, 256)
+            val keyFactory = SecretKeyFactory.getInstance(HASHING_ALGORITHM)
+            val passwordHash = keyFactory.generateSecret(keySpec).encoded
+
+            if (passwordHash.size != expectedHash.size) {
+                return false
+            }
+            return passwordHash.indices.all { index ->
+                passwordHash[index] == expectedHash[index]
+            }
+        } catch (exception: Exception) {
+            Log.e(TAG, "Failed to hash password", exception)
             return false
         }
-        return passwordHash.indices.all { index ->
-            passwordHash[index] == expectedHash[index]
-        }
     }
 
-    fun hash(password: String, salt: ByteArray): ByteArray {
-        val keySpec = PBEKeySpec(password.toCharArray(), salt, 1000, 256)
-        try {
-            val keyFactory = SecretKeyFactory.getInstance(HASHING_ALGORITHM)
-            return keyFactory.generateSecret(keySpec).encoded
-        } catch (exception: NoSuchAlgorithmException) {
-            Log.e(TAG, "Error while hashing password", exception)
-            throw AssertionError("Error while hashing password: " + exception.message)
-        } catch (exception: InvalidKeySpecException) {
-            Log.e(TAG, "Error while hashing password", exception)
-            throw AssertionError("Error while hashing password: " + exception.message)
-        } finally {
-            keySpec.clearPassword()
-        }
-    }
-
-    fun generateSalt(): ByteArray {
+    fun generatePasswordSalt(): ByteArray {
         val salt = ByteArray(16)
         SecureRandom().nextBytes(salt)
         return salt

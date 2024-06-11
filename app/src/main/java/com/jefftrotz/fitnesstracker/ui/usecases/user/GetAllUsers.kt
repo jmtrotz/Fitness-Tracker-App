@@ -1,4 +1,4 @@
-package com.jefftrotz.fitnesstracker.ui.usecases
+package com.jefftrotz.fitnesstracker.ui.usecases.user
 
 import android.util.Log
 import com.jefftrotz.fitnesstracker.model.User

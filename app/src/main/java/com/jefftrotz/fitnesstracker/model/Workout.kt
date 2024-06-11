@@ -13,17 +13,24 @@ data class Workout(
 
     @TypeConverter
     override fun toString(): String {
-        return "name: $name, date: ${date.time}, description: $description, exercises: $exercises"
+        return "name: $name," +
+                "date: ${date.time}," +
+                "description: $description," +
+                "exercises: $exercises"
     }
 
     companion object {
 
         @TypeConverter
         fun String.workoutFromString(): Workout {
-            val name = this.substringAfter("name: ").substringBefore(",")
-            val date = this.substringAfter("date: ").substringBefore(",")
-            val description = this.substringAfter("description: ").substringBefore(",")
-            val exercises = this.substringAfter("exercises: ").substringBefore(",")
+            val name = this.substringAfter("name: ")
+                .substringBefore(",")
+            val date = this.substringAfter("date: ")
+                .substringBefore(",")
+            val description = this.substringAfter("description: ")
+                .substringBefore(",")
+            val exercises = this.substringAfter("exercises: ")
+                .substringBefore(",")
 
             return Workout(
                 name = name,

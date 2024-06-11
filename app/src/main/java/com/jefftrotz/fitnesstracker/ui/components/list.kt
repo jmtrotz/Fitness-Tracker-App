@@ -33,9 +33,7 @@ import com.jefftrotz.fitnesstracker.R
 @Composable
 fun <T> ItemList(list: List<T>, content: @Composable (T) -> Unit) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(4.dp),
+        modifier = Modifier.fillMaxWidth().padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(items = list) { item ->
@@ -55,28 +53,25 @@ fun ListItem(
         mutableStateOf(false)
     }
 
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp)
-        .clickable {
-            onClick()
-        }
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable { onClick() }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
-            Column(modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 8.dp)) {
-                Text(
-                    text = itemName,
-                    fontSize = 20.sp
-                )
-
-                Text(
-                    text = itemDetails,
-                    fontSize = 16.sp
-                )
+            Column(
+                modifier = Modifier.padding(
+                    start = 8.dp,
+                    top = 8.dp,
+                    bottom = 8.dp
+                )) {
+                Text(text = itemName, fontSize = 20.sp)
+                Text(text = itemDetails, fontSize = 16.sp)
 
                 if (isCardExpanded && expandedDetails.isNotEmpty()) {
                     for (string in expandedDetails) {

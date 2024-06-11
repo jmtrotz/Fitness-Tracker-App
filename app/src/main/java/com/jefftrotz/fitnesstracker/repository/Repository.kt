@@ -8,13 +8,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class Repository @Inject constructor(
-    private val api: API,
-    private val dao: DAO
-) {
+class Repository @Inject constructor(private val api: API, private val dao: DAO) {
 
     // TODO: Finish networking
-    suspend fun getRemoteUser(email: String): User? {
+    suspend fun getRemoteUser(email: String) : User? {
         return api.getUser()
     }
 
@@ -23,24 +20,24 @@ class Repository @Inject constructor(
         api.postUser()
     }
 
-    suspend fun getAllUsers(): Flow<List<User>> {
-        return dao.getAllUsers().flowOn(Dispatchers.IO)
+    suspend fun getAllUsers() : Flow<List<User>> {
+        return dao.getAllUsers()
     }
 
-    suspend fun getUserByEmail(email: String): Flow<User?> {
-        return dao.getUserByEmail(email).flowOn(Dispatchers.IO)
+    suspend fun getUserByEmail(user: User) : Flow<User?> {
+        return dao.getUserByEmail(user.email).flowOn(Dispatchers.IO)
     }
 
     suspend fun insertUser(user: User) {
-        dao.insertUser(user)
+        dao.insertUser(user = user)
     }
 
     suspend fun updateUser(user: User) {
-        dao.updateUser(user)
+        dao.updateUser(user = user)
     }
 
     suspend fun deleteUser(user: User) {
-        dao.deleteUser(user)
+        dao.deleteUser(user = user)
     }
 
     suspend fun deleteAllUsers() {

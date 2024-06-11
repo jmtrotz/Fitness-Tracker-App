@@ -2,8 +2,8 @@ package com.jefftrotz.fitnesstracker.ui.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -19,10 +19,11 @@ import com.jefftrotz.fitnesstracker.R
 
 @ExperimentalMaterial3Api
 @Composable
-fun TopBar(title: String = "",
-           isMainScreen: Boolean = false,
-           onClick: () -> Unit = {},
-           actions: @Composable () -> Unit
+fun TopBar(
+    title: String = "",
+    isMainScreen: Boolean = false,
+    onClick: () -> Unit = {},
+    actions: @Composable () -> Unit
 ) {
     if (isMainScreen) {
         CenterAlignedTopAppBar(
@@ -41,7 +42,7 @@ fun TopBar(title: String = "",
             navigationIcon = {
                 IconButton(onClick = onClick) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.content_description_back_button_icon)
                     )
                 }

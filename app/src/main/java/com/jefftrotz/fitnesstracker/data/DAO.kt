@@ -7,7 +7,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.jefftrotz.fitnesstracker.model.User
+import com.jefftrotz.fitnesstracker.model.Workout
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 
 @Dao
 interface DAO {

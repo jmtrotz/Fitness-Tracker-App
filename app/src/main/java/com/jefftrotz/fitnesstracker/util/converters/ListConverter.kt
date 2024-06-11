@@ -7,6 +7,7 @@ import com.jefftrotz.fitnesstracker.model.Exercise
 
 // TODO: Update Gson to Moshi or other JSON converter
 class ListConverter {
+
     private val gson = Gson()
 
     @TypeConverter

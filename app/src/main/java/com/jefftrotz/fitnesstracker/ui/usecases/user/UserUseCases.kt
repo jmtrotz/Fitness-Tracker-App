@@ -1,6 +1,6 @@
-package com.jefftrotz.fitnesstracker.ui.usecases
+package com.jefftrotz.fitnesstracker.ui.usecases.user
 
-data class UseCases (
+data class UserUseCases (
     val getAllUsers: GetAllUsers,
     val getUser: GetUser,
     val addUser: AddUser,

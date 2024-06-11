@@ -3,6 +3,7 @@ package com.jefftrotz.fitnesstracker.ui.screens.login
 import androidx.lifecycle.viewModelScope
 import com.jefftrotz.fitnesstracker.R
 import com.jefftrotz.fitnesstracker.model.User
+import com.jefftrotz.fitnesstracker.model.intents.Cancel
 import com.jefftrotz.fitnesstracker.model.states.ErrorState
 import com.jefftrotz.fitnesstracker.model.states.LoadingState
 import com.jefftrotz.fitnesstracker.model.states.LoginState
@@ -10,7 +11,7 @@ import com.jefftrotz.fitnesstracker.model.intents.Login
 import com.jefftrotz.fitnesstracker.model.intents.UpdateState
 import com.jefftrotz.fitnesstracker.preferences.PreferenceKeys
 import com.jefftrotz.fitnesstracker.preferences.Preferences
-import com.jefftrotz.fitnesstracker.ui.usecases.UseCases
+import com.jefftrotz.fitnesstracker.ui.usecases.user.UserUseCases
 import com.jefftrotz.fitnesstracker.util.login.LoginUtils
 import com.jefftrotz.fitnesstracker.viewmodel.BaseViewModel
 import com.jefftrotz.fitnesstracker.viewmodel.StringProvider
@@ -20,7 +21,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val stringProvider: StringProvider,
     private val preferences: Preferences,
-    private val useCase: UseCases
+    private val useCase: UserUseCases
 ) : BaseViewModel() {
 
     private var state = LoginState()
@@ -34,6 +35,7 @@ class LoginViewModel @Inject constructor(
                         super.setUIState(state)
                     }
                     is Login -> verifyInput()
+                    is Cancel -> cancelLogin()
                 }
             }
         }
@@ -115,6 +117,22 @@ class LoginViewModel @Inject constructor(
             val errorMessage = stringProvider.getString(id = stringID)
             super.setUIState(ErrorState(message = errorMessage))
         }
+    }
+
+    private fun cancelLogin() {
+        val emailHint = R.string.placeholder_email
+        state.emailState.hint = stringProvider.getString(emailHint)
+        state.emailState.text = ""
+        state.emailState.errorMessage = ""
+        state.emailState.isHintVisible = true
+        state.emailState.isError = false
+
+        val passwordHint = R.string.placeholder_email
+        state.passwordState.hint = stringProvider.getString(passwordHint)
+        state.passwordState.text = ""
+        state.passwordState.errorMessage = ""
+        state.passwordState.isHintVisible = true
+        state.passwordState.isError = false
     }
 
     companion object {
