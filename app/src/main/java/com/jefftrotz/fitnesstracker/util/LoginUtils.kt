@@ -1,4 +1,4 @@
-package com.jefftrotz.fitnesstracker.util.login
+package com.jefftrotz.fitnesstracker.util
 
 import android.util.Log
 import java.security.SecureRandom

@@ -9,12 +9,15 @@ import com.jefftrotz.fitnesstracker.model.states.LoadingState
 import com.jefftrotz.fitnesstracker.model.states.LoginState
 import com.jefftrotz.fitnesstracker.model.intents.Login
 import com.jefftrotz.fitnesstracker.model.intents.UpdateState
+
 import com.jefftrotz.fitnesstracker.preferences.PreferenceKeys
 import com.jefftrotz.fitnesstracker.preferences.Preferences
 import com.jefftrotz.fitnesstracker.ui.usecases.user.UserUseCases
-import com.jefftrotz.fitnesstracker.util.login.LoginUtils
+
+import com.jefftrotz.fitnesstracker.util.LoginUtils
 import com.jefftrotz.fitnesstracker.viewmodel.BaseViewModel
 import com.jefftrotz.fitnesstracker.viewmodel.StringProvider
+
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

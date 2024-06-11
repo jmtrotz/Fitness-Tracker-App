@@ -2,17 +2,19 @@ package com.jefftrotz.fitnesstracker.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+
 import com.jefftrotz.fitnesstracker.model.states.UIState
 import com.jefftrotz.fitnesstracker.model.intents.UserIntent
+
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel: ViewModel() {
 
-    private val _uiState = MutableStateFlow(UIState())
     private val _userIntent = MutableStateFlow(UserIntent())
+    private val _uiState = MutableStateFlow(UIState())
     private val _sideEffect = MutableStateFlow("")
 
     fun getUIStateFlow(): StateFlow<UIState> {
