@@ -24,8 +24,8 @@ import androidx.navigation.NavController
 
 import com.jefftrotz.fitnesstracker.R
 import com.jefftrotz.fitnesstracker.model.Workout
-import com.jefftrotz.fitnesstracker.model.intents.DeleteWorkout
-import com.jefftrotz.fitnesstracker.model.intents.UpdateWorkout
+import com.jefftrotz.fitnesstracker.model.actions.DeleteWorkout
+import com.jefftrotz.fitnesstracker.model.actions.UpdateWorkout
 import com.jefftrotz.fitnesstracker.navigation.Screens
 import com.jefftrotz.fitnesstracker.ui.components.AddButton
 import com.jefftrotz.fitnesstracker.ui.components.CommonTextField
@@ -56,7 +56,7 @@ fun EditWorkoutScreen(navController: NavController, workout: Workout) {
                 title = stringResource(id = R.string.details_top_bar_title),
                 isMainScreen = false,
                 onClick = {
-                    viewModel.setUserIntent(UpdateWorkout(workout = workout))
+                    viewModel.setUserAction(UpdateWorkout(workout = workout))
                     navController.popBackStack()
                 }
             ) {
@@ -94,7 +94,7 @@ fun EditWorkoutScreen(navController: NavController, workout: Workout) {
                     }
                 ) {
                     showDeleteDialog = false
-                    viewModel.setUserIntent(DeleteWorkout(workout = workout))
+                    viewModel.setUserAction(DeleteWorkout(workout = workout))
                     navController.popBackStack()
                 }
             }
@@ -118,7 +118,7 @@ private fun WorkoutDetails(
             value = workout.name,
             onValueChange = { newName ->
                 workout.name = newName
-                viewModel.setUserIntent(intent = UpdateWorkout(workout = workout))
+                viewModel.setUserAction(action = UpdateWorkout(workout = workout))
             }
         )
 
@@ -128,7 +128,7 @@ private fun WorkoutDetails(
             value = workout.description,
             onValueChange = { newDescription ->
                 workout.description = newDescription
-                viewModel.setUserIntent(intent = UpdateWorkout(workout = workout))
+                viewModel.setUserAction(action = UpdateWorkout(workout = workout))
             }
         )
 

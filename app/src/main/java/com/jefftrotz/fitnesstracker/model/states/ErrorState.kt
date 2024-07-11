@@ -1,3 +1,7 @@
 package com.jefftrotz.fitnesstracker.model.states
 
-class ErrorState(val message: String) : UIState()
+/**
+ * [UIState] to represent a View when there is an error.
+ * @see UIState
+ */
+class ErrorState : UIState()

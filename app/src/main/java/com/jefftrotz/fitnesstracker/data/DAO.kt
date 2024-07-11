@@ -6,14 +6,19 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+
 import com.jefftrotz.fitnesstracker.model.User
-import com.jefftrotz.fitnesstracker.model.Workout
 import kotlinx.coroutines.flow.Flow
-import java.util.UUID
 
 @Dao
 interface DAO {
 
+    /**
+     * Gets all users from the database.
+     * @return Flow of [User] Lists representing
+     * users stored in the database.
+     * @see User
+     */
     @Query("SELECT * FROM users")
     suspend fun getAllUsers() : Flow<List<User>>
 

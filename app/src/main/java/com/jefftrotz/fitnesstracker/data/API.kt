@@ -1,23 +1,27 @@
 package com.jefftrotz.fitnesstracker.data
 
 import com.jefftrotz.fitnesstracker.model.User
-import com.jefftrotz.fitnesstracker.model.Workout
 import retrofit2.http.GET
 import retrofit2.http.POST
-import javax.inject.Singleton
 
+/**
+ * API to fetch data stored on the server.
+ */
 // TODO: Finalize networking
-@Singleton
 interface API {
-    @GET(value = "user")
-    suspend fun getUser(): User?
 
+    /**
+     * Executes a GET request to fetch a user from the server.
+     * @return [User] object representing the user that was fetched
+     * from the server, or null if the user doesn't exist.
+     * @see User
+     */
+    @GET(value = "user")
+    suspend fun getUser() : User?
+
+    /**
+     * Executes a POST request to store a [User] on the server.
+     */
     @POST(value = "")
     suspend fun postUser()
-
-    @GET(value = "workout")
-    suspend fun getWorkout(): Workout?
-
-    @POST(value = "")
-    suspend fun postWorkout()
 }

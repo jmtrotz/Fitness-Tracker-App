@@ -2,9 +2,9 @@ package com.jefftrotz.fitnesstracker.ui.screens.workout
 
 import androidx.lifecycle.viewModelScope
 import com.jefftrotz.fitnesstracker.model.Workout
-import com.jefftrotz.fitnesstracker.model.intents.CreateWorkout
-import com.jefftrotz.fitnesstracker.model.intents.DeleteWorkout
-import com.jefftrotz.fitnesstracker.model.intents.UpdateWorkout
+import com.jefftrotz.fitnesstracker.model.actions.CreateWorkout
+import com.jefftrotz.fitnesstracker.model.actions.DeleteWorkout
+import com.jefftrotz.fitnesstracker.model.actions.UpdateWorkout
 import com.jefftrotz.fitnesstracker.repository.Repository
 import com.jefftrotz.fitnesstracker.viewmodel.BaseViewModel
 import com.jefftrotz.fitnesstracker.viewmodel.StringProvider
@@ -20,7 +20,7 @@ class WorkoutViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            super.getUserIntentFlow().collect { intent ->
+            super.getUserActionFlow().collect { intent ->
                 when (intent) {
                     is CreateWorkout -> createWorkout(intent.workout)
                     is UpdateWorkout -> updateWorkout(intent.workout)

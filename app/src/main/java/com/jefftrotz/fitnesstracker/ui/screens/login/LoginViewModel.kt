@@ -3,12 +3,12 @@ package com.jefftrotz.fitnesstracker.ui.screens.login
 import androidx.lifecycle.viewModelScope
 import com.jefftrotz.fitnesstracker.R
 import com.jefftrotz.fitnesstracker.model.User
-import com.jefftrotz.fitnesstracker.model.intents.Cancel
+import com.jefftrotz.fitnesstracker.model.actions.Cancel
 import com.jefftrotz.fitnesstracker.model.states.ErrorState
 import com.jefftrotz.fitnesstracker.model.states.LoadingState
 import com.jefftrotz.fitnesstracker.model.states.LoginState
-import com.jefftrotz.fitnesstracker.model.intents.Login
-import com.jefftrotz.fitnesstracker.model.intents.UpdateState
+import com.jefftrotz.fitnesstracker.model.actions.Login
+import com.jefftrotz.fitnesstracker.model.actions.UpdateState
 
 import com.jefftrotz.fitnesstracker.preferences.PreferenceKeys
 import com.jefftrotz.fitnesstracker.preferences.Preferences
@@ -31,7 +31,7 @@ class LoginViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            super.getUserIntentFlow().collect { intent ->
+            super.getUserActionFlow().collect { intent ->
                 when (intent) {
                     is UpdateState -> {
                         state = intent.newState as LoginState
@@ -71,7 +71,8 @@ class LoginViewModel @Inject constructor(
         }
 
         if (stringID != -1 && errorMessage.isNotBlank()) {
-            super.setUIState(ErrorState(message = errorMessage))
+            super.setSideEffect(message = errorMessage)
+            super.setUIState(ErrorState())
             return
         }
 
@@ -85,7 +86,8 @@ class LoginViewModel @Inject constructor(
             } else {
                 val stringID = R.string.error_account_doesnt_exist
                 val errorMessage = stringProvider.getString(id = stringID)
-                super.setUIState(ErrorState(message = errorMessage))
+                super.setSideEffect(message = errorMessage)
+                super.setUIState(ErrorState())
             }
         }
     }
@@ -103,7 +105,8 @@ class LoginViewModel @Inject constructor(
         if (user.email != savedEmail) {
             val stringID = R.string.error_incorrect_credentials
             val errorMessage = stringProvider.getString(id = stringID)
-            super.setUIState(ErrorState(message = errorMessage))
+            super.setSideEffect(message = errorMessage)
+            super.setUIState(ErrorState())
         }
 
         val passwordIsCorrect = LoginUtils.verifyPassword(
@@ -113,12 +116,13 @@ class LoginViewModel @Inject constructor(
         )
 
         if (passwordIsCorrect) {
-            state.loginSuccessful = true
+            state.isLoginSuccessful = true
             super.setUIState(state)
         } else {
             val stringID = R.string.error_incorrect_credentials
             val errorMessage = stringProvider.getString(id = stringID)
-            super.setUIState(ErrorState(message = errorMessage))
+            super.setSideEffect(message = errorMessage)
+            super.setUIState(ErrorState())
         }
     }
 

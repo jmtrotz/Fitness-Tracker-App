@@ -24,8 +24,6 @@ import androidx.navigation.NavController
 
 import com.jefftrotz.fitnesstracker.R
 import com.jefftrotz.fitnesstracker.model.Workout
-import com.jefftrotz.fitnesstracker.model.intents.DeleteWorkout
-import com.jefftrotz.fitnesstracker.model.intents.UpdateWorkout
 import com.jefftrotz.fitnesstracker.navigation.Screens
 import com.jefftrotz.fitnesstracker.ui.components.AddButton
 import com.jefftrotz.fitnesstracker.ui.components.CommonTextField

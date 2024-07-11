@@ -31,14 +31,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 import com.jefftrotz.fitnesstracker.R
-import com.jefftrotz.fitnesstracker.model.intents.Cancel
+import com.jefftrotz.fitnesstracker.model.actions.Cancel
 import com.jefftrotz.fitnesstracker.navigation.Screens
 import com.jefftrotz.fitnesstracker.ui.components.CommonTextField
 import com.jefftrotz.fitnesstracker.ui.components.PasswordTextField
 import com.jefftrotz.fitnesstracker.model.states.LoadingState
 import com.jefftrotz.fitnesstracker.model.states.LoginState
-import com.jefftrotz.fitnesstracker.model.intents.Login
-import com.jefftrotz.fitnesstracker.model.intents.UpdateState
+import com.jefftrotz.fitnesstracker.model.actions.Login
+import com.jefftrotz.fitnesstracker.model.actions.UpdateState
 import com.jefftrotz.fitnesstracker.viewmodel.BaseViewModel
 
 @Composable
@@ -85,12 +85,12 @@ fun RenderScreen(viewModel: BaseViewModel, state: LoginState) {
                 onEmailChanged = { newEmail ->
                     state.emailState.text = newEmail;
                     val intent = UpdateState(newState = state)
-                    viewModel.setUserIntent(intent = intent)
+                    viewModel.setUserAction(action = intent)
                 },
                 onPasswordChanged = { newPassword ->
                     state.passwordState.text = newPassword;
                     val intent = UpdateState(newState = state)
-                    viewModel.setUserIntent(intent = intent)
+                    viewModel.setUserAction(action = intent)
                 }
             )
             ActionButtons(viewModel = viewModel)
@@ -133,7 +133,7 @@ private fun LoginForm(
             onClick = {
                 state.isPasswordVisible = !state.isPasswordVisible
                 val intent = UpdateState(newState = state)
-                viewModel.setUserIntent(intent = intent)
+                viewModel.setUserAction(action = intent)
             },
             isPasswordVisible = state.isPasswordVisible,
             isError = passwordState.isError,
@@ -151,14 +151,14 @@ private fun ActionButtons(viewModel: BaseViewModel) {
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         Button(
-            onClick = { viewModel.setUserIntent(Cancel()) },
+            onClick = { viewModel.setUserAction(Cancel()) },
             modifier = Modifier.padding(top = 8.dp)
         ) {
             val buttonText = stringResource(id = R.string.button_label_cancel)
             Text(text = buttonText)
         }
         Button(
-            onClick = { viewModel.setUserIntent(Login()) },
+            onClick = { viewModel.setUserAction(Login()) },
             modifier = Modifier.padding(top = 8.dp)
         ) {
             val buttonText = stringResource(id = R.string.button_label_login)

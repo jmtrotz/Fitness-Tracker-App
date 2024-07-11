@@ -1,7 +1,7 @@
 package com.jefftrotz.fitnesstracker.ui.screens.main
 
 import androidx.lifecycle.viewModelScope
-import com.jefftrotz.fitnesstracker.model.intents.Logout
+import com.jefftrotz.fitnesstracker.model.actions.Logout
 import com.jefftrotz.fitnesstracker.model.states.MainState
 import com.jefftrotz.fitnesstracker.preferences.Preferences
 import com.jefftrotz.fitnesstracker.preferences.PreferenceKeys
@@ -31,7 +31,7 @@ class MainViewModel @Inject constructor(
                 }
             }
 
-            super.getUserIntentFlow().collect { intent ->
+            super.getUserActionFlow().collect { intent ->
                 when (intent) {
                     is Logout -> logout()
                 }
