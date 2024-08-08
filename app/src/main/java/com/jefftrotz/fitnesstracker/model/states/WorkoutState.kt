@@ -8,4 +8,4 @@ import com.jefftrotz.fitnesstracker.model.Workout
  * @see Workout
  * @see UIState
  */
-class WorkoutState(val workout: Workout? = null) : UIState()
+class WorkoutState(val workout: Workout? = null): UIState()

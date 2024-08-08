@@ -39,7 +39,7 @@ data class User(
      * Converts a [User] object to a String.
      * @return Returns a String representing the [User] object.
      */
-    override fun toString() : String {
+    override fun toString(): String {
         return "email: $email, password: $password, passwordSalt: $passwordSalt, isLocalOnly: $isLocalOnly, workouts: $workouts"
     }
 
@@ -48,7 +48,7 @@ data class User(
      * @return Returns a boolean representing whether the [User]
      * objects are equal or not.
      */
-    override fun equals(other: Any?) : Boolean {
+    override fun equals(other: Any?): Boolean {
         if (this.javaClass != other?.javaClass) {
             return false
         }
@@ -82,7 +82,7 @@ data class User(
      * Calculates the hashcode for a [User] object.
      * @return Int representing the hash code.
      */
-    override fun hashCode() : Int {
+    override fun hashCode(): Int {
         var result = email.hashCode()
         result = 31 * result + password.contentHashCode()
         result = 31 * result + passwordSalt.contentHashCode()
@@ -97,7 +97,7 @@ data class User(
          * Converts a String to a [User].
          * @return Returns a [User] object representing the String.
          */
-        fun String.userFromString() : User {
+        fun String.userFromString(): User {
             val passwordSalt = this.substringAfter("passwordSalt: ").substringBefore(",")
             val isLocalOnly = this.substringAfter("isLocalOnly: ").substringBefore(",")
             val workouts = this.substringAfter("workouts: ").substringBefore(",")

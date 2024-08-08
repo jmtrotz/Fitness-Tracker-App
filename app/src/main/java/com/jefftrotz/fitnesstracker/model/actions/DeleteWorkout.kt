@@ -8,4 +8,4 @@ import com.jefftrotz.fitnesstracker.model.Workout
  * @see UserAction
  * @see Workout
  */
-class DeleteWorkout(val workout: Workout) : UserAction()
+class DeleteWorkout(val workout: Workout): UserAction()

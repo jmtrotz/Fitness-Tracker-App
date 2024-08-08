@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+
 import com.jefftrotz.fitnesstracker.model.Exercise
 import com.jefftrotz.fitnesstracker.model.Workout
 import com.jefftrotz.fitnesstracker.ui.screens.AboutScreen
@@ -13,62 +14,79 @@ import com.jefftrotz.fitnesstracker.ui.screens.SearchScreen
 import com.jefftrotz.fitnesstracker.ui.screens.SplashScreen
 import com.jefftrotz.fitnesstracker.ui.screens.account.AccountScreen
 import com.jefftrotz.fitnesstracker.ui.screens.account.CreateAccount
-import com.jefftrotz.fitnesstracker.ui.screens.exercise.CreateOrEditExerciseScreen
+import com.jefftrotz.fitnesstracker.ui.screens.exercise.CreateExerciseScreen
+import com.jefftrotz.fitnesstracker.ui.screens.exercise.EditExerciseScreen
 import com.jefftrotz.fitnesstracker.ui.screens.main.MainScreen
-import com.jefftrotz.fitnesstracker.ui.screens.workout.CreateOrEditWorkoutScreen
+import com.jefftrotz.fitnesstracker.ui.screens.workout.CreateWorkoutScreen
+import com.jefftrotz.fitnesstracker.ui.screens.workout.EditWorkoutScreen
 import com.squareup.moshi.Moshi
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 fun Navigation() {
+
     val navController = rememberNavController()
 
     // TODO Remove splash screen? Seems to be automatically provided by MaterialDesign 3?
     NavHost(
-        navController = navController,
-        startDestination = Screens.SplashScreen.route
+        startDestination = Screens.SplashScreen.route,
+        navController = navController
     ) {
 
-        composable(Screens.CreateOrEditExerciseScreen.route) { backStackEntry ->
-            val exerciseJson = backStackEntry.arguments?.getString("exercise")
-            val moshi = Moshi.Builder().build();
-            val jsonAdapter = moshi.adapter(Exercise::class.java).lenient()
-            val exercise = exerciseJson?.let { json -> jsonAdapter.fromJson(json) }
-            CreateOrEditExerciseScreen(navController = navController, exercise = exercise)
+        composable(route = Screens.CreateExerciseScreen.route) {
+            CreateExerciseScreen(navController = navController)
         }
 
-        composable(Screens.CreateOrEditWorkoutScreen.route) { backStackEntry ->
+        composable(route = Screens.CreateWorkoutScreen.route) {
+            CreateWorkoutScreen(navController = navController)
+        }
+
+        composable(route = Screens.EditExerciseScreen.route) { backStackEntry ->
+            val exerciseJson = backStackEntry.arguments?.getString("exercise")
+            val moshi = Moshi.Builder().build()
+            val jsonAdapter = moshi.adapter(Exercise::class.java).lenient()
+            val exercise = exerciseJson?.let { json -> jsonAdapter.fromJson(json) }
+
+            if (exercise != null) {
+                EditExerciseScreen(navController = navController, exercise = exercise)
+            }
+        }
+
+        composable(route = Screens.EditWorkoutScreen.route) { backStackEntry ->
             val workoutJson = backStackEntry.arguments?.getString("workout")
-            val moshi = Moshi.Builder().build();
+            val moshi = Moshi.Builder().build()
             val jsonAdapter = moshi.adapter(Workout::class.java).lenient()
             val workout = workoutJson?.let { json -> jsonAdapter.fromJson(json) }
-            CreateOrEditWorkoutScreen(navController = navController, workout = workout)
+
+            if (workout != null) {
+                EditWorkoutScreen(navController = navController, workout = workout)
+            }
         }
 
         navigation(startDestination = Screens.LoginScreen.route, route = "login") {
-            composable(Screens.CreateAccount.route) {
+            composable(route = Screens.CreateAccount.route) {
                 CreateAccount(navController = navController)
             }
         }
 
-        composable(Screens.MainScreen.route) {
+        composable(route = Screens.MainScreen.route) {
             MainScreen(navController = navController)
         }
 
-        composable(Screens.SearchScreen.route) {
+        composable(route = Screens.SearchScreen.route) {
             SearchScreen(navController = navController)
         }
 
         navigation(startDestination = Screens.SettingsScreen.route, route = "settings") {
-            composable(Screens.AboutScreen.route) {
+            composable(route = Screens.AboutScreen.route) {
                 AboutScreen(navController = navController)
             }
-            composable(Screens.AccountScreen.route) {
+            composable(route = Screens.AccountScreen.route) {
                 AccountScreen(navController = navController)
             }
         }
 
-        composable(Screens.SplashScreen.route) {
+        composable(route = Screens.SplashScreen.route) {
             SplashScreen(navController = navController)
         }
     }

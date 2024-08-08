@@ -13,8 +13,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.*
 
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 
 import com.jefftrotz.fitnesstracker.R
 import com.jefftrotz.fitnesstracker.model.Workout
+import com.jefftrotz.fitnesstracker.model.actions.UpdateWorkout
 import com.jefftrotz.fitnesstracker.navigation.Screens
 import com.jefftrotz.fitnesstracker.ui.components.AddButton
 import com.jefftrotz.fitnesstracker.ui.components.CommonTextField
@@ -33,8 +34,8 @@ import com.jefftrotz.fitnesstracker.ui.components.ShowDialog
 import com.jefftrotz.fitnesstracker.ui.components.TopBar
 import com.jefftrotz.fitnesstracker.viewmodel.BaseViewModel
 
-@ExperimentalMaterial3Api
 @Composable
+@ExperimentalMaterial3Api
 fun CreateWorkoutScreen(navController: NavController) {
 
     val snackbarState = remember { SnackbarHostState() }
@@ -54,7 +55,7 @@ fun CreateWorkoutScreen(navController: NavController) {
                 title = stringResource(id = R.string.details_top_bar_title),
                 isMainScreen = false,
                 onClick = {
-                    //viewModel.setUserIntent(UpdateWorkout(workout = workout))
+                    //viewModel.setUserAction(action = UpdateWorkout(workout = workout))
                     navController.popBackStack()
                 }
             ) {
@@ -92,7 +93,7 @@ fun CreateWorkoutScreen(navController: NavController) {
                     }
                 ) {
                     showDeleteDialog = false
-                    //viewModel.setUserIntent(DeleteWorkout(workout = workout))
+                    //viewModel.setUserAction(action = DeleteWorkout(workout = workout))
                     navController.popBackStack()
                 }
             }
@@ -100,7 +101,6 @@ fun CreateWorkoutScreen(navController: NavController) {
     }
 }
 
-@ExperimentalMaterial3Api
 @Composable
 private fun WorkoutDetails(
     navController: NavController,
@@ -116,7 +116,8 @@ private fun WorkoutDetails(
             value = workout.name,
             onValueChange = { newName ->
                 workout.name = newName
-                //viewModel.setUserIntent(intent = UpdateWorkout(workout = workout))
+                val updateAction = UpdateWorkout(workout = workout)
+                viewModel.setUserAction(action = updateAction)
             }
         )
 
@@ -126,7 +127,8 @@ private fun WorkoutDetails(
             value = workout.description,
             onValueChange = { newDescription ->
                 workout.description = newDescription
-                //viewModel.setUserIntent(intent = UpdateWorkout(workout = workout))
+                val updateAction = UpdateWorkout(workout = workout)
+                viewModel.setUserAction(action = updateAction)
             }
         )
 
@@ -146,9 +148,9 @@ private fun WorkoutDetails(
             }
 
             ListItem(
-                itemName = exercise.name,
                 itemDetails = exercise.type.toString(),
-                expandedDetails = details
+                expandedDetails = details,
+                itemName = exercise.name
             ) {
                 navController.navigate(Screens.CreateExerciseScreen.route)
             }

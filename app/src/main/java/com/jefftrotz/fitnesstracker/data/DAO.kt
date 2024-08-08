@@ -20,10 +20,10 @@ interface DAO {
      * @see User
      */
     @Query("SELECT * FROM users")
-    suspend fun getAllUsers() : Flow<List<User>>
+    suspend fun getAllUsers(): Flow<List<User>>
 
-    @Query("SELECT * FROM users WHERE email = :email")
-    suspend fun getUserByEmail(email: String) : Flow<User?>
+    @Query("SELECT * FROM users WHERE email =:email")
+    suspend fun getUserByEmail(email: String): Flow<User?>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertUser(user: User)

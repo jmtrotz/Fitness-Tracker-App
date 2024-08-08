@@ -44,9 +44,9 @@ fun <T> ItemList(list: List<T>, content: @Composable (T) -> Unit) {
 
 @Composable
 fun ListItem(
-    itemName: String,
-    itemDetails: String,
     expandedDetails: List<String> = emptyList(),
+    itemDetails: String,
+    itemName: String,
     onClick: () -> Unit
 ) {
     var isCardExpanded by remember {

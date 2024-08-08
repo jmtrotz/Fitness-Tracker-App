@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 
-class PreferencesImplementation(context: Context) : Preferences {
+class PreferencesImplementation(context: Context): Preferences {
 
     private var prefs: SharedPreferences
 

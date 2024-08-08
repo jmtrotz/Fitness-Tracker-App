@@ -15,6 +15,6 @@ object RepositoryModule {
     @Binds
     @Singleton
     fun provideRepository(api: API, database: Database): Repository {
-        return Repository(api = api, dao = database.getDAO())
+        return RepositoryImplementation(api = api, dao = database.getDAO())
     }
 }

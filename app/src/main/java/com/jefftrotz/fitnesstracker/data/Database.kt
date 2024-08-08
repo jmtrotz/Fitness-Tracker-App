@@ -17,7 +17,7 @@ import com.jefftrotz.fitnesstracker.util.converters.UuidConverter
  */
 @Database(entities = [User::class], version = 1, exportSchema = false)
 @TypeConverters(DateConverter::class, ListConverter::class, UuidConverter::class)
-abstract class Database : RoomDatabase() {
+abstract class Database: RoomDatabase() {
 
     /**
      * Gets the [DAO] (data access object).

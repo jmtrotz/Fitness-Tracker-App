@@ -48,6 +48,7 @@ import com.jefftrotz.fitnesstracker.util.formatDate
 import java.util.ArrayList
 
 @Composable
+@ExperimentalMaterial3Api
 fun MainScreen(navController: NavController) {
 
     val snackbarState = remember { SnackbarHostState() }
@@ -71,7 +72,7 @@ fun MainScreen(navController: NavController) {
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 fun RenderScreen(navController: NavController, state: MainState) {
 
     var showLogoutDialog by remember { mutableStateOf(false) }

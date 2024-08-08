@@ -15,7 +15,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val preferences: Preferences,
     private val useCases: UserUseCases
-) : BaseViewModel() {
+): BaseViewModel() {
 
     init {
         viewModelScope.launch {
@@ -31,8 +31,8 @@ class MainViewModel @Inject constructor(
                 }
             }
 
-            super.getUserActionFlow().collect { intent ->
-                when (intent) {
+            super.getUserActionFlow().collect { action ->
+                when (action) {
                     is Logout -> logout()
                 }
             }

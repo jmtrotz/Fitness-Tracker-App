@@ -16,7 +16,7 @@ enum class BarType {
      * Converts a [BarType] to a String.
      * @return String representing the [BarType].
      */
-    override fun toString() : String {
+    override fun toString(): String {
         return when(this) {
             SUPER_CURL -> "Super Curl"
             DUMBBELL -> "Dumbbell"
@@ -32,7 +32,7 @@ enum class BarType {
          * Converts a String to a [BarType].
          * @return [BarType] representing the String.
          */
-        fun String.barTypeFromString() : BarType {
+        fun String.barTypeFromString(): BarType {
             return when(this) {
                 "Super Curl" -> SUPER_CURL
                 "Dumbbell" -> DUMBBELL

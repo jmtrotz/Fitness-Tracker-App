@@ -6,22 +6,21 @@ import com.jefftrotz.fitnesstracker.repository.Repository
 
 class AddUser(private val repository: Repository) {
 
-    suspend operator fun invoke(user: User, isLocalUser: Boolean) {
+    suspend operator fun invoke(user: User) {
         if (user.email.isBlank()) {
             Log.d(TAG, "Email is blank")
             return
-        }
-        if (user.password.isEmpty()) {
+        } else if (user.password.isEmpty()) {
             Log.d(TAG, "Password is empty")
             return
         }
 
-        if (isLocalUser) {
+        if (user.isLocalOnly) {
             Log.d(TAG, "Inserting local user ${user.email}")
             repository.insertUser(user)
         } else {
             Log.d(TAG, "Inserting ${user.email}")
-            repository.postUser(user)
+            //repository.postUser(user)
         }
     }
 

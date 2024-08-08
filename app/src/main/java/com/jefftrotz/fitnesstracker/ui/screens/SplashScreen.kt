@@ -37,8 +37,8 @@ fun SplashScreen(navController: NavController) {
         }))
         delay(timeMillis = 2000L)
         // TODO: Check if user is already logged in
-        navController.navigate(Screens.LoginDestination.route) {
-            popUpTo(Screens.SplashDestination.route) {
+        navController.navigate(Screens.LoginScreen.route) {
+            popUpTo(Screens.SplashScreen.route) {
                 inclusive = true
             }
         }

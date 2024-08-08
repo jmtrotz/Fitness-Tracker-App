@@ -14,4 +14,4 @@ data class LoginState(
     val emailState: TextFieldState = TextFieldState(),
     var isPasswordVisible: Boolean = false,
     var isLoginSuccessful: Boolean = false
-) : UIState()
+): UIState()

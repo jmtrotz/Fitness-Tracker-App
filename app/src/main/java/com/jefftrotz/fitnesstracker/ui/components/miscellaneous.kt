@@ -17,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jefftrotz.fitnesstracker.R
 
-@ExperimentalMaterial3Api
 @Composable
+@ExperimentalMaterial3Api
 fun TopBar(
     title: String = "",
     isMainScreen: Boolean = false,
@@ -57,12 +57,12 @@ fun TopBar(
 @Composable
 fun AddButton(onClick: () -> Unit) {
     FloatingActionButton(
-        onClick = onClick,
-        shape = RoundedCornerShape(size = 50.dp)
+        shape = RoundedCornerShape(size = 50.dp),
+        onClick = onClick
     ) {
         Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = stringResource(R.string.content_description_add_button_icon)
+            contentDescription = stringResource(R.string.content_description_add_button_icon),
+            imageVector = Icons.Default.Add
         )
     }
 }
@@ -70,8 +70,9 @@ fun AddButton(onClick: () -> Unit) {
 @Composable
 fun ShowDialog(text: String, onDismiss: () -> Unit, onConfirm: () -> Unit) {
     AlertDialog(
-        onDismissRequest = {
-            onDismiss()
+        shape = RoundedCornerShape(16.dp),
+        text = {
+            Text(text = text)
         },
         confirmButton = {
             Button(onClick = onConfirm) {
@@ -83,9 +84,8 @@ fun ShowDialog(text: String, onDismiss: () -> Unit, onConfirm: () -> Unit) {
                 Text(text = stringResource(id = R.string.dialog_dismiss_button_label))
             }
         },
-        text = {
-            Text(text = text)
-        },
-        shape = RoundedCornerShape(16.dp)
+        onDismissRequest = {
+            onDismiss()
+        }
     )
 }

@@ -14,7 +14,7 @@ object PreferencesModule {
 
     @Provides
     @Singleton
-    fun providePreferences(@ApplicationContext context: Context) : Preferences {
+    fun providePreferences(@ApplicationContext context: Context): Preferences {
         return PreferencesImplementation(context = context)
     }
 }

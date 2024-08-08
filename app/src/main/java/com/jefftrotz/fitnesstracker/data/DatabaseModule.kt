@@ -27,7 +27,7 @@ object DatabaseModule {
      */
     @Provides
     @Singleton
-    fun provideDAO(database: Database) : DAO {
+    fun provideDAO(database: Database): DAO {
         return database.getDAO()
     }
 
@@ -39,7 +39,7 @@ object DatabaseModule {
      */
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context) : Database {
+    fun provideDatabase(@ApplicationContext context: Context): Database {
         return Room.databaseBuilder(context = context,
             klass = Database::class.java,
             name = "database")

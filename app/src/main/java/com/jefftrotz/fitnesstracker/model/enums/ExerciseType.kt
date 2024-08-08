@@ -14,7 +14,7 @@ enum class ExerciseType {
      * Converts an [ExerciseType] to a String.
      * @return String representing the [ExerciseType].
      */
-    override fun toString() : String {
+    override fun toString(): String {
         return when(this) {
             WEIGHTS -> "Weights"
             CARDIO -> "Cardio"
@@ -28,7 +28,7 @@ enum class ExerciseType {
          * Converts a String to an [ExerciseType].
          * @return [ExerciseType] representing the String.
          */
-        fun String.exerciseTypeFromString() : ExerciseType {
+        fun String.exerciseTypeFromString(): ExerciseType {
             return when(this) {
                 "Cardio" -> CARDIO
                 "Weights" -> WEIGHTS

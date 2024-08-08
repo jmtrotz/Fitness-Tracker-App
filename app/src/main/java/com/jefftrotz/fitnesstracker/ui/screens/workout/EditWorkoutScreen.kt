@@ -35,8 +35,8 @@ import com.jefftrotz.fitnesstracker.ui.components.ShowDialog
 import com.jefftrotz.fitnesstracker.ui.components.TopBar
 import com.jefftrotz.fitnesstracker.viewmodel.BaseViewModel
 
-@ExperimentalMaterial3Api
 @Composable
+@ExperimentalMaterial3Api
 fun EditWorkoutScreen(navController: NavController, workout: Workout) {
 
     val snackbarState = remember { SnackbarHostState() }
@@ -102,7 +102,6 @@ fun EditWorkoutScreen(navController: NavController, workout: Workout) {
     }
 }
 
-@ExperimentalMaterial3Api
 @Composable
 private fun WorkoutDetails(
     navController: NavController,

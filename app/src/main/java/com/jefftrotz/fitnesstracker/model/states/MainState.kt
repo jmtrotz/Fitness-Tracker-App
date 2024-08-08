@@ -9,4 +9,4 @@ import com.jefftrotz.fitnesstracker.model.Workout
  * @see Workout
  * @see UIState
  */
-data class MainState(val workouts: List<Workout>) : UIState()
+data class MainState(val workouts: List<Workout>): UIState()

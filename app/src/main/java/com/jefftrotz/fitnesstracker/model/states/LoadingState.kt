@@ -5,4 +5,4 @@ package com.jefftrotz.fitnesstracker.model.states
  * is being performed in the background.
  * @see UIState
  */
-class LoadingState : UIState()
+class LoadingState: UIState()

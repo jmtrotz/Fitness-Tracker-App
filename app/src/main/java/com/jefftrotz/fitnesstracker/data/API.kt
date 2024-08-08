@@ -7,7 +7,7 @@ import retrofit2.http.POST
 /**
  * API to fetch data stored on the server.
  */
-// TODO: Finalize networking
+// TODO: Finish
 interface API {
 
     /**
@@ -17,7 +17,7 @@ interface API {
      * @see User
      */
     @GET(value = "user")
-    suspend fun getUser() : User?
+    suspend fun getUser(): User?
 
     /**
      * Executes a POST request to store a [User] on the server.

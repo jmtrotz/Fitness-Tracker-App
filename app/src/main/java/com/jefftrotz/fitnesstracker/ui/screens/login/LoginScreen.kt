@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
@@ -52,7 +50,7 @@ fun LoginScreen(navController: NavController) {
     when (state.value) {
         is LoginState -> {
             val newState = state.value as LoginState
-            if (newState.loginSuccessful) {
+            if (newState.isLoginSuccessful) {
                 navController.navigate(route = Screens.MainScreen.route) {
                     popUpTo(route = Screens.LoginScreen.route) {
                         inclusive = true
@@ -83,14 +81,14 @@ fun RenderScreen(viewModel: BaseViewModel, state: LoginState) {
                 viewModel = viewModel,
                 state = state,
                 onEmailChanged = { newEmail ->
-                    state.emailState.text = newEmail;
-                    val intent = UpdateState(newState = state)
-                    viewModel.setUserAction(action = intent)
+                    state.emailState.text = newEmail
+                    val updateAction = UpdateState(newState = state)
+                    viewModel.setUserAction(action = updateAction)
                 },
                 onPasswordChanged = { newPassword ->
-                    state.passwordState.text = newPassword;
-                    val intent = UpdateState(newState = state)
-                    viewModel.setUserAction(action = intent)
+                    state.passwordState.text = newPassword
+                    val updateAction = UpdateState(newState = state)
+                    viewModel.setUserAction(action = updateAction)
                 }
             )
             ActionButtons(viewModel = viewModel)
@@ -99,7 +97,6 @@ fun RenderScreen(viewModel: BaseViewModel, state: LoginState) {
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun LoginForm(
     viewModel: BaseViewModel,
     state: LoginState,
@@ -132,8 +129,8 @@ private fun LoginForm(
             label = passwordState.hint,
             onClick = {
                 state.isPasswordVisible = !state.isPasswordVisible
-                val intent = UpdateState(newState = state)
-                viewModel.setUserAction(action = intent)
+                val updateAction = UpdateState(newState = state)
+                viewModel.setUserAction(action = updateAction)
             },
             isPasswordVisible = state.isPasswordVisible,
             isError = passwordState.isError,

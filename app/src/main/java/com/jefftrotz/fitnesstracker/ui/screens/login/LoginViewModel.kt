@@ -13,7 +13,6 @@ import com.jefftrotz.fitnesstracker.model.actions.UpdateState
 import com.jefftrotz.fitnesstracker.preferences.PreferenceKeys
 import com.jefftrotz.fitnesstracker.preferences.Preferences
 import com.jefftrotz.fitnesstracker.ui.usecases.user.UserUseCases
-
 import com.jefftrotz.fitnesstracker.util.LoginUtils
 import com.jefftrotz.fitnesstracker.viewmodel.BaseViewModel
 import com.jefftrotz.fitnesstracker.viewmodel.StringProvider
@@ -25,16 +24,16 @@ class LoginViewModel @Inject constructor(
     private val stringProvider: StringProvider,
     private val preferences: Preferences,
     private val useCase: UserUseCases
-) : BaseViewModel() {
+): BaseViewModel() {
 
     private var state = LoginState()
 
     init {
         viewModelScope.launch {
-            super.getUserActionFlow().collect { intent ->
-                when (intent) {
+            super.getUserActionFlow().collect { action ->
+                when (action) {
                     is UpdateState -> {
-                        state = intent.newState as LoginState
+                        state = action.newState as LoginState
                         super.setUIState(state)
                     }
                     is Login -> verifyInput()

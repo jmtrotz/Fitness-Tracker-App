@@ -16,10 +16,10 @@ object UserUseCasesModule {
     fun provideUseCases(repository: Repository): UserUseCases {
         return UserUseCases(
             getAllUsers = GetAllUsers(repository),
-            getUser = GetUser(repository),
-            addUser = AddUser(repository),
             updateUser = UpdateUser(repository),
-            deleteUser = DeleteUser(repository)
+            deleteUser = DeleteUser(repository),
+            getUser = GetUser(repository),
+            addUser = AddUser(repository)
         )
     }
 }

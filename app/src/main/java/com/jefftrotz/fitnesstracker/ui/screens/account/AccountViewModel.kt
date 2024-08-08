@@ -8,7 +8,7 @@ import javax.inject.Inject
 class AccountViewModel @Inject constructor(
     private val preferences: Preferences,
     private val useCases: UserUseCases
-) : BaseViewModel() {
+): BaseViewModel() {
 
     fun checkIfAccountExists() {
 

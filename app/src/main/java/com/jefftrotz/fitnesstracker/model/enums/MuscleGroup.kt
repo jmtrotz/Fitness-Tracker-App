@@ -18,7 +18,7 @@ enum class MuscleGroup {
      * Converts a [MuscleGroup] to a String.
      * @return String representing the [MuscleGroup].
      */
-    override fun toString() : String {
+    override fun toString(): String {
         return when(this) {
             SHOULDERS -> "Shoulders"
             CHEST -> "Chest"
@@ -35,7 +35,7 @@ enum class MuscleGroup {
          * Converts a String to a [MuscleGroup].
          * @return [MuscleGroup] representing the String.
          */
-        fun String.MuscleGroupFromString() : MuscleGroup {
+        fun String.MuscleGroupFromString(): MuscleGroup {
             return when(this) {
                 "Shoulders" -> SHOULDERS
                 "Chest" -> CHEST

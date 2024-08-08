@@ -14,14 +14,19 @@ data class Exercise(
 ) {
 
     @TypeConverter
-    override fun toString() : String {
-        return "name: $name, type: ${type.typeString}, description: $description, distance: $distance, weight: $weight, repetitions: $repetitions"
+    override fun toString(): String {
+        return "name: $name," +
+                "type: $type," +
+                "description: $description," +
+                "distance: $distance," +
+                "weight: $weight," +
+                "repetitions: $repetitions"
     }
 
     companion object {
 
         @TypeConverter
-        fun String.exerciseFromString() : Exercise {
+        fun String.exerciseFromString(): Exercise {
             val name = this.substringAfter("name: ").substringBefore(",")
             val type = this.substringAfter("type: ").substringBefore(",")
             val description = substringAfter("description: ").substringAfter(",")
@@ -40,7 +45,7 @@ data class Exercise(
         }
 
         @TypeConverter
-        fun List<Char>.exerciseListFromCharList() : List<Exercise> {
+        fun List<Char>.exerciseListFromCharList(): List<Exercise> {
             val exercises = arrayListOf<Exercise>()
 
             for (exerciseChar in this) {
